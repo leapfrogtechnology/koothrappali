@@ -1,0 +1,16 @@
+//- page-a.pug
+extends ../layout.pug
+
+block content
+  h1= title
+  table
+    thead
+      tr
+        th= "ID"
+        th= "Project name"
+    tbody
+      each project in projects
+        tr
+          td= project.id
+          td= project.name
+  
