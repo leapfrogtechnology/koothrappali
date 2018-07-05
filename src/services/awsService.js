@@ -2,10 +2,13 @@ import AWS from 'aws-sdk';
 
 AWS.config.logger = console;
 AWS.config.update({
-  accessKeyId: 'AKIAJRBY24NPM7G5PJGQ',
-  secretAccessKey: '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',
-  region: 'us-east-1'
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.APP_SECRET,
+  region: process.env.REGION
 });
+
+console.log(process.env.ACCESS_KEY_ID)
+console.log(process.env.REGION)
 
 class AwsService {
 
@@ -17,7 +20,7 @@ class AwsService {
       let request = new AWS.EC2({ apiVersion: '2018-10-01' }).describeInstances();
 
       request
-        .on('success', function(response) {
+        .on('success', function (response) {
           return resolve(response.data.Reservations);
         })
         .send();
