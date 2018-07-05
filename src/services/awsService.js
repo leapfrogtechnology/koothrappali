@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import AWS from 'aws-sdk';
+import CONFIG from '../const';
 
 AWS.config.logger = console;
 AWS.config.update({
@@ -7,11 +9,8 @@ AWS.config.update({
   region: process.env.REGION
 });
 
-console.log(process.env.ACCESS_KEY_ID)
-console.log(process.env.REGION)
-
+const { PROJECT } = CONFIG;
 class AwsService {
-
   /**
    * Fetch reservations from aws
    */
@@ -20,7 +19,7 @@ class AwsService {
       let request = new AWS.EC2({ apiVersion: '2018-10-01' }).describeInstances();
 
       request
-        .on('success', function (response) {
+        .on('success', function(response) {
           return resolve(response.data.Reservations);
         })
         .send();
@@ -33,33 +32,39 @@ class AwsService {
    * @param {array} reservations 
    */
   getProjectInfo(reservations) {
-    return new Promise((resolve, reject) => {
-      let projectsInfo = [];
-      let instanceDetails = [];
-      let instanceInfo = {};
-
-      for (let item in reservations) {
-        let instances = reservations[item].Instances;
-
-        for (let i in instances) {
-          instanceInfo.state = instances[i].State;
-          instanceInfo.imageId = instances[i].ImageId;
-          instanceInfo.instanceId = instances[i].InstanceId;
-          instanceInfo.instanceType = instances[i].InstanceType;
-          instanceInfo.publicIpAddress = instances[i].PublicIpAddress;
-
-          let tags = instances[i].Tags;
-          for (let i in tags) {
-            if (tags[i].Key === 'Project') {
-              projectsInfo.push((instanceInfo.project = tags[i].Value));
-            }
-          }
+    let project = '';
+    let response = [];
+    reservations.forEach(reservation => {
+      reservation.Instances[0].Tags.forEach(tag => {
+        if (tag.Key === PROJECT) {
+          project = tag.Value;
         }
-        instanceDetails.push(instanceInfo);
-      }
-
-      return resolve(instanceDetails);
+      });
+      response.push({
+        project: project,
+        state: reservation.Instances[0].State,
+        imageId: reservation.Instances[0].ImageId,
+        instanceId: reservation.Instances[0].InstanceId,
+        instanceType: reservation.Instances[0].InstanceType,
+        publicIpAddress: reservation.Instances[0].PublicIpAddress
+      });
     });
+
+    return response;
+  }
+
+  /**
+   * Group by instances
+   * 
+   * @param {Array} instances 
+   */
+  groupInstances(instances) {
+    let result = _(instances)
+      .groupBy(x => x.project)
+      .map((value, key) => ({ project: key, instances: value }))
+      .value();
+
+    return result;
   }
 }
 
