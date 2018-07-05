@@ -8,6 +8,10 @@ AWS.config.update({
 });
 
 class AwsService {
+
+  /**
+   * Fetch reservations from aws
+   */
   getAllReservations() {
     return new Promise((resolve, reject) => {
       let request = new AWS.EC2({ apiVersion: '2018-10-01' }).describeInstances();

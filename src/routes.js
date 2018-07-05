@@ -14,11 +14,9 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
-router.use('/api/projects', projectsAPIController);
-router.use('/api/auth', authAPIController);
-
-router.use('/', projectsController);
-
 router.use('/aws', awsController);
+router.use('/', projectsController);
+router.use('/api/auth', authAPIController);
+router.use('/api/projects', projectsAPIController);
 
 export default router;
