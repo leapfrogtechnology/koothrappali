@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import swaggerSpec from './utils/swagger';
-import projectsController from './controllers/projects';
 import awsController from './controllers/aws';
-import projectsAPIController from './controllers/api/projects';
 import authAPIController from './controllers/api/auth';
+import projectsController from './controllers/projects';
+import projectsAPIController from './controllers/api/projects';
 
 /**
  * Contains all API routes for the application.

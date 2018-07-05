@@ -10,7 +10,6 @@ AWS.config.update({
 class AwsService {
   getAllReservations() {
     return new Promise((resolve, reject) => {
-      let projectsInfo = [];
       let request = new AWS.EC2({ apiVersion: '2018-10-01' }).describeInstances();
 
       request
@@ -21,6 +20,11 @@ class AwsService {
     });
   }
 
+  /**
+   * Fetch project details
+   * 
+   * @param {array} reservations 
+   */
   getProjectInfo(reservations) {
     return new Promise((resolve, reject) => {
       let projectsInfo = [];
@@ -31,20 +35,19 @@ class AwsService {
         let instances = reservations[item].Instances;
 
         for (let i in instances) {
+          instanceInfo.state = instances[i].State;
           instanceInfo.imageId = instances[i].ImageId;
           instanceInfo.instanceId = instances[i].InstanceId;
           instanceInfo.instanceType = instances[i].InstanceType;
           instanceInfo.publicIpAddress = instances[i].PublicIpAddress;
-          instanceInfo.state = instances[i].State;
 
           let tags = instances[i].Tags;
-          for (let j in tags) {
-            if (tags[j].Key === 'Project') {
-              projectsInfo.push((instanceInfo.project = tags[j].Value));
+          for (let i in tags) {
+            if (tags[i].Key === 'Project') {
+              projectsInfo.push((instanceInfo.project = tags[i].Value));
             }
           }
         }
-
         instanceDetails.push(instanceInfo);
       }
 
