@@ -23,18 +23,26 @@ class AwsService {
 
   getProjectInfo(reservations) {
     return new Promise((resolve, reject) => {
+      let projectsInfo = [];
       let instanceDetails = [];
       let instanceInfo = {};
 
       for (let item in reservations) {
         let instances = reservations[item].Instances;
+
         for (let i in instances) {
           instanceInfo.imageId = instances[i].ImageId;
           instanceInfo.instanceId = instances[i].InstanceId;
           instanceInfo.instanceType = instances[i].InstanceType;
           instanceInfo.publicIpAddress = instances[i].PublicIpAddress;
           instanceInfo.state = instances[i].State;
-          instanceInfo.tags = instances[i].Tags;
+
+          let tags = instances[i].Tags;
+          for (let j in tags) {
+            if (tags[j].Key === 'Project') {
+              projectsInfo.push((instanceInfo.project = tags[j].Value));
+            }
+          }
         }
 
         instanceDetails.push(instanceInfo);
