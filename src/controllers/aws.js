@@ -31,4 +31,22 @@ router.get('/instances', (req, res, next) => {
     .catch(err => next(err));
 });
 
+/**
+ * GET s3 all bucket /buckets
+ */
+router.get('/buckets', (req, res, next) => {
+  awsService.getallS3BucketNames()
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+});
+
+/**
+ * GET s3 bucket objects /buckets
+ */
+router.get('/buckets/:bucketName', (req, res, next) => {
+  awsService.getS3BucketObjects(req.params.bucketName)
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+})
+
 export default router;

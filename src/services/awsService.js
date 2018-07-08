@@ -19,7 +19,7 @@ class AwsService {
       let request = new AWS.EC2({ apiVersion: '2018-10-01' }).describeInstances();
 
       request
-        .on('success', function(response) {
+        .on('success', function (response) {
           return resolve(response.data.Reservations);
         })
         .send();
@@ -65,6 +65,39 @@ class AwsService {
       .value();
 
     return result;
+  }
+
+  getallS3BucketNames() {
+    return new Promise((resolve, reject) => {
+      let bucketName = [];
+      let s3 = new AWS.S3({ apiVersion: '2018-10-01' });
+
+      // Call S3 to list current buckets
+      s3.listBuckets().promise()
+        .then((response) => {
+          bucketName = response.Buckets.map(a => a.Name);
+
+          return resolve(bucketName)
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  getS3BucketObjects(bucketName) {
+    return new Promise((resolve, reject) => {
+      let s3 = new AWS.S3({ apiVersion: '2018-10-01' });
+      let params = {
+        Bucket: bucketName,
+      };
+
+      // List objects in a bucket
+      s3.listObjectsV2(params).promise()
+        .then((response) => {
+
+          return resolve(response)
+        })
+        .catch(err => reject(err));
+    });
   }
 }
 
