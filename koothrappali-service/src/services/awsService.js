@@ -93,12 +93,10 @@ class AwsService {
       // List objects in a bucket
       s3.listObjectsV2(params).promise()
         .then((response) => {
-
           return resolve(response)
         })
         .catch(err => reject(err));
     });
   }
 }
-
 export default AwsService;

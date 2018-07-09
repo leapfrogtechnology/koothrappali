@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import swaggerSpec from './utils/swagger';
 import awsController from './controllers/aws';
+import storageontroller from './controllers/storage';
+import databaseController from './controllers/database';
 import authAPIController from './controllers/api/auth';
 import projectsController from './controllers/projects';
 import projectsAPIController from './controllers/api/projects';
@@ -15,7 +17,9 @@ router.get('/swagger.json', (req, res) => {
 });
 
 router.use('/aws', awsController);
+router.use('/s3', storageontroller);
 router.use('/', projectsController);
+router.use('/rds', databaseController);
 router.use('/api/auth', authAPIController);
 router.use('/api/projects', projectsAPIController);
 
