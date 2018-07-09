@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import swaggerSpec from './utils/swagger';
+import awsController from './controllers/aws';
+import authAPIController from './controllers/api/auth';
 import projectsController from './controllers/projects';
 import projectsAPIController from './controllers/api/projects';
-import authAPIController from './controllers/api/auth';
 
 /**
  * Contains all API routes for the application.
@@ -13,9 +14,9 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
-router.use('/api/projects', projectsAPIController);
-router.use('/api/auth', authAPIController);
-
+router.use('/aws', awsController);
 router.use('/', projectsController);
+router.use('/api/auth', authAPIController);
+router.use('/api/projects', projectsAPIController);
 
 export default router;
