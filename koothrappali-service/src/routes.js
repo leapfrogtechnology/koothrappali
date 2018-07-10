@@ -16,7 +16,7 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
-router.use('/aws', awsController);
+router.use('/ec2', awsController);
 router.use('/s3', storageontroller);
 router.use('/', projectsController);
 router.use('/rds', databaseController);

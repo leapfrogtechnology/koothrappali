@@ -1,4 +1,3 @@
-import AWS from 'aws-sdk';
 import { Router } from 'express';
 import common from '../htttpResponse/response';
 import StorageService from '../services/storageService';

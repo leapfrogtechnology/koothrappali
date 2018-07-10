@@ -7,7 +7,7 @@ let router = Router();
 let databaseService = new DatabaseService();
 
 /**
- * GET RDS 
+ * GET RDS instances
  */
 router.get('/dbInstances', (req, res, next) => {
     databaseService.getDatabaseInstances(req.params.bucketName)

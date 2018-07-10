@@ -11,10 +11,12 @@ AWS.config.update({
 
 class StorageService {
   /**
-   * Get db instances
-   */
+ * Get db instances
+ */
   getDatabaseInstances() {
     return new Promise((resolve, reject) => {
+      let dbInstances = '';
+      let result = [];
       let rds = new AWS.RDS();
       let params = {
         DBInstanceIdentifier: 'mux-mud-psq-pt-002',
@@ -22,7 +24,25 @@ class StorageService {
 
       rds.describeDBInstances(params).promise()
         .then((response) => {
-          return resolve(response.DBInstances)
+          dbInstances = response.DBInstances[0];
+        })
+        .then(() => {
+          var params = {
+            ResourceName: 'arn:aws:rds:us-east-1:009409476372:db:mux-mud-psq-pt-002', /* required */
+          };
+          return rds.listTagsForResource(params).promise()
+            .then((resources) => {
+              let tag = resources.TagList[0];
+
+              result.push({
+                Project: tag.Value,
+                DBInstanceClass: dbInstances.DBInstanceClass,
+                AllocatedStorage: dbInstances.AllocatedStorage,
+                MultiAZ: dbInstances.DBInstanceClass
+              });
+              return resolve(result[0]);
+            })
+            .catch(err => reject(err));
         })
         .catch(err => reject(err));
     });
