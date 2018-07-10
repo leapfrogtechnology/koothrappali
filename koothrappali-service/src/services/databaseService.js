@@ -28,7 +28,7 @@ class StorageService {
         })
         .then(() => {
           var params = {
-            ResourceName: 'arn:aws:rds:us-east-1:009409476372:db:mux-mud-psq-pt-002', /* required */
+            ResourceName: 'arn:aws:rds:us-east-1:009409476372:db:mux-mud-psq-pt-002', 
           };
           return rds.listTagsForResource(params).promise()
             .then((resources) => {
