@@ -18,7 +18,7 @@ router.get('/config', (request, response) => {
 /**
  * GET /instances
  */
-router.get('/instances', (req, res, next) => {
+router.get('/', (req, res, next) => {
   awsService
     .getAllReservations()
     .then(reservations => {

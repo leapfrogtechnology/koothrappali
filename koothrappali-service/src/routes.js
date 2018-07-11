@@ -16,11 +16,11 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
-router.use('/ec2', awsController);
-router.use('/s3', storageontroller);
+router.use('/api/projects', awsController);
 router.use('/', projectsController);
-router.use('/rds', databaseController);
 router.use('/api/auth', authAPIController);
+router.use('/api/buckets', storageontroller);
+router.use('/api/databaseInstances', databaseController);
 router.use('/api/projects', projectsAPIController);
 
 export default router;

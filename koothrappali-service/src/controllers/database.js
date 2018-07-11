@@ -9,7 +9,7 @@ let databaseService = new DatabaseService();
 /**
  * GET RDS instances
  */
-router.get('/dbInstances', (req, res, next) => {
+router.get('/', (req, res, next) => {
     databaseService.getDatabaseInstances(req.params.bucketName)
         .then(data => common.success(res, { data }))
         .catch(err => next(err));
