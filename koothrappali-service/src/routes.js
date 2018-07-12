@@ -4,7 +4,7 @@ import awsController from './controllers/aws';
 import storageontroller from './controllers/storage';
 import databaseController from './controllers/database';
 import authAPIController from './controllers/api/auth';
-import projectsController from './controllers/projects';
+import projectController from './controllers/project';
 import projectsAPIController from './controllers/api/projects';
 
 /**
@@ -16,11 +16,14 @@ router.get('/swagger.json', (req, res) => {
   res.json(swaggerSpec);
 });
 
+router.use('/api/projects', projectController);
+
+
+
 router.use('/api/projects', awsController);
-router.use('/', projectsController);
 router.use('/api/auth', authAPIController);
 router.use('/api/buckets', storageontroller);
 router.use('/api/databaseInstances', databaseController);
-router.use('/api/projects', projectsAPIController);
+// router.use('/api/projects', projectsAPIController);
 
 export default router;

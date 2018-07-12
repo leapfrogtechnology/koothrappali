@@ -27,7 +27,7 @@ class StorageService {
           dbInstances = response.DBInstances[0];
         })
         .then(() => {
-          var params = {
+          let params = {
             ResourceName: 'arn:aws:rds:us-east-1:009409476372:db:mux-mud-psq-pt-002', 
           };
           return rds.listTagsForResource(params).promise()
