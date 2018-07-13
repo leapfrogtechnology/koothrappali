@@ -70,13 +70,6 @@ function getProjectDetails(reservation) {
 }
 
 /**
- * Fetch reservations from aws
- */
-export async function getAllReservations(instancesId) {
-  return AwsProject.getAllReservations(instancesId);
-}
-
-/**
  * Group by projects with same name
  * 
  * @param {Array} instances 
