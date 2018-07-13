@@ -52,7 +52,7 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, '/../public')));
 
 // API Routes
-app.use('/', routes);
+app.use('/api', routes);
 
 // Error Middlewares
 app.use(errorHandler.genericErrorHandler);

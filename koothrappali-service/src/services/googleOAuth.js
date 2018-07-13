@@ -21,6 +21,6 @@ export async function getTokens(code) {
 
     return tokens;
   } catch (err) {
-    throw Boom.badRequest();
+    throw err
   }
 }

@@ -2,32 +2,26 @@
 import axios from 'axios';
 import CONFIG from '../constants';
 
-const { LMS_API_KEY } = CONFIG;
+const { LMS_API_KEY, LMS } = CONFIG;
 
 class Project {
   /**
-  * Fetch all Project from lms.
+  * Fetch all projects detail from lms.
   */
   static async getAllProjects() {
     try {
       const result = await axios({
         method: 'get',
-        url: 'http://lms.lftechnology.com/api/projectlist',
+        url: `${LMS.BASE_URL + LMS.PROJECT_LIST}`,
         headers: {
           apiKey: LMS_API_KEY
         },
         result: {}
       });
 
-      console.log(result.data);
       return result.data;
-    } catch (err) {
-      // if (err.response.status === 401) {
-      //   throw Boom.unauthorized();
-      // }
-      // throw Boom.badRequest();
-      console.log(err);
     }
+    catch (err) { throw (err) }
   }
 }
 export default Project;
