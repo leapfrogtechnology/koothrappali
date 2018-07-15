@@ -5,17 +5,9 @@ import _ from 'lodash';
 
 import * as awsUtils from '../utils/aws';
 
-const { LMS_API_KEY, CONSTANTS, PROJECT, DB_INSTANCE_IDENTIFIER } = CONFIG;
+const { LMS_API_KEY, CONSTANTS, PROJECT, DB_INSTANCE_IDENTIFIER, AWS_KEYS } = CONFIG;
 
 import AWS from 'aws-sdk';
-
-AWS.config.logger = console;
-AWS.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.APP_SECRET,
-  region: process.env.REGION
-});
-
 
 /**
  * Get all projects from lms.
@@ -24,6 +16,15 @@ AWS.config.update({
  */
 export async function getAllProjects() {
   return LmsProject.getAllProjects();
+}
+
+/**
+ * Get project bu id from lms.
+ *
+ * @return {Promise}
+ */
+export async function getProjectById(id) {
+  return LmsProject.getProjectById(id);
 }
 
 /**
@@ -37,6 +38,35 @@ export async function getAllAwsInstances(instanceType, tagKey) {
 
   try {
     instances = awsUtils.describeInstances();
+
+    let projectInformations = await instances.promise();
+    projectInformations.Reservations.forEach(reservation => { result.push(getProjectDetails(reservation)); });
+
+    return result;
+  } catch (err) { throw (err) }
+}
+
+/**
+ * Get all projects from aws.
+ *
+ * @return {Promise}
+ */
+export async function getAwsInstance(projectDetails, instanceName) {
+  let result = [];
+  let instances = '';
+  var params = {
+    Filters: [{
+      Name: "tag:Project",
+      Values: [instanceName]
+    }]
+  }
+  try {
+    awsUtils.updateKey(projectDetails.id);
+    if (!instanceName) {
+      instances = awsUtils.describeInstancesWithoutFilter(params);
+    }
+    else
+      instances = awsUtils.describeInstances(params);
 
     let projectInformations = await instances.promise();
     projectInformations.Reservations.forEach(reservation => { result.push(getProjectDetails(reservation)); });

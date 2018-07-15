@@ -15,13 +15,35 @@ router.get('/lms', (req, res, next) => {
 });
 
 /**
- * GET aws instanceas
+ * GET aws instances
  */
 router.get('/instances', (req, res, next) => {
-  ProjectService.getAllAwsInstances(req.query.instanceType,req.query.tagKey)
+  ProjectService.getAllAwsInstances(req.query.instanceType, req.query.tagKey)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 });
+
+/**
+ * GET aws instanceas by id
+ */
+router.get('/:projectId/instances', (req, res, next) => {
+  ProjectService.getProjectById(req.params.projectId)
+    .then((projectDetails) => {
+
+      return ProjectService.getAwsInstance(projectDetails, req.query.instanceName)
+    })
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+});
+
+/**
+ * GET rds instance by id
+ */
+router.get('/:projectId/rds', (req, res, next) => {
+  ProjectService.getRdsInstances(req.params.bucketName)
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+})
 
 /**
  * GET rds instances
