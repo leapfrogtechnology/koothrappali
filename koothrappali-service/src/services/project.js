@@ -116,10 +116,33 @@ export function groupInstances(instances) {
 /**
  * Fetch information from rds database
  */
+export async function getRdsInstanceById(id) {
+  try {
+    awsUtils.updateKey(id);
+    let result = [];
+    let params = { DBInstanceIdentifier: DB_INSTANCE_IDENTIFIER };
+    let instances = awsUtils.describeDBInstances(params);
+    let response = await instances.promise();
+    response.DBInstances.forEach(database => {
+      result.push({
+        DBName: database.DBName,
+        DBInstanceClass: database.DBInstanceClass,
+        AllocatedStorage: database.AllocatedStorage,
+        MultiAZ: database.DBInstanceClass
+      });
+    });
+
+    return result[0];
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * Fetch information from rds database
+ */
 export async function getRdsInstances() {
   try {
     let result = [];
-    let rds = new AWS.RDS();
     let params = { DBInstanceIdentifier: DB_INSTANCE_IDENTIFIER };
     let instances = awsUtils.describeDBInstances(params);
     let response = await instances.promise();
@@ -140,8 +163,10 @@ export async function getRdsInstances() {
 /**
  * Fetch buckets name from s3
  */
-export async function getAllBucket() {
+export async function listBucketNames(id) {
   try {
+    awsUtils.updateKey(id);
+
     let bucketName = [];
     let buckets = awsUtils.listBuckets();
     let response = await buckets.promise();
@@ -155,8 +180,10 @@ export async function getAllBucket() {
 /**
  * Fetch details of specific bucket from s3
  */
-export async function getBucket(bucketName) {
+export async function getBucketByBucketName(id, bucketName) {
   try {
+    awsUtils.updateKey(id);
+
     let params = { Bucket: bucketName };
     let bucketObject = awsUtils.listObjectsV2(params);
     let response = await bucketObject.promise();

@@ -15,59 +15,38 @@ router.get('/lms', (req, res, next) => {
 });
 
 /**
- * GET aws instances
- */
-router.get('/instances', (req, res, next) => {
-  ProjectService.getAllAwsInstances(req.query.instanceType, req.query.tagKey)
-    .then(data => common.success(res, { data }))
-    .catch(err => next(err));
-});
-
-/**
- * GET aws instanceas by id
+ * GET aws instances by project id
  */
 router.get('/:projectId/instances', (req, res, next) => {
   ProjectService.getProjectById(req.params.projectId)
-    .then((projectDetails) => {
-
-      return ProjectService.getAwsInstance(projectDetails, req.query.instanceName)
-    })
+    .then((projectDetails) => ProjectService.getAwsInstance(projectDetails, req.query.instanceName))
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 });
 
 /**
- * GET rds instance by id
+ * GET database instance from rds
  */
 router.get('/:projectId/rds', (req, res, next) => {
-  ProjectService.getRdsInstances(req.params.bucketName)
+  ProjectService.getRdsInstanceById(req.params.projectId)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
 
 /**
- * GET rds instances
+ * GET list of buckets from s3
  */
-router.get('/rds', (req, res, next) => {
-  ProjectService.getRdsInstances(req.params.bucketName)
+router.get('/:projectId/buckets', (req, res, next) => {
+  ProjectService.listBucketNames(req.params.projectId)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
 
 /**
- * GET all buckets from s3
- */
-router.get('/buckets', (req, res, next) => {
-  ProjectService.getAllBucket()
-    .then(data => common.success(res, { data }))
-    .catch(err => next(err));
-})
-
-/**
-* GET rds instances
+* GET bucket details from s3
 */
-router.get('/buckets/:bucketName', (req, res, next) => {
-  ProjectService.getBucket(req.params.bucketName)
+router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
+  ProjectService.getBucketByBucketName(req.params.projectId,req.params.bucketName)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
