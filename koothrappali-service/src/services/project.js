@@ -1,13 +1,10 @@
-import LmsProject from '../model/LmsProject';
-// import AwsProject from '../model/AwsProject';
-import CONFIG from '../constants';
 import _ from 'lodash';
 
+import CONFIG from '../constants';
 import * as awsUtils from '../utils/aws';
+import LmsProject from '../model/LmsProject';
 
-const { LMS_API_KEY, CONSTANTS, PROJECT, DB_INSTANCE_IDENTIFIER, AWS_KEYS } = CONFIG;
-
-import AWS from 'aws-sdk';
+const { CONSTANTS, DB_INSTANCE_IDENTIFIER } = CONFIG;
 
 /**
  * Get all projects from lms.

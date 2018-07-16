@@ -24,7 +24,7 @@ class Project {
     catch (err) { throw (err) }
   }
 
-  /**
+/**
 * Fetch projects detail by Id from lms.
 */
   static async  getProjectById(id) {
