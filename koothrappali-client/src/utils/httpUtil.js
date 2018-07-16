@@ -6,7 +6,6 @@ export function get(url, headers) {
       method: 'GET',
       url: url
     });
-
   }
   catch (error) { error }
 }
