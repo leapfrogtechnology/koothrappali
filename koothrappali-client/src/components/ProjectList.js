@@ -45,10 +45,6 @@ class ProjectList extends Component {
                           <i className="ti-arrow-up text-success"></i>
                           <a className="counter text-success" href="#" onClick={this.handleProject} onClick={this.handleProject.bind(this, project.id)}>EC2
                         </a> &emsp;
-                        <a className="counter text-success" href="#" onClick={this.handleProject} onClick={this.handleS3.bind(this, project.id)}>S3
-                        </a> &emsp;
-                        <a className="counter text-success" href="#" onClick={this.handleProject} onClick={this.handleRDS.bind(this, project.id)}>RDS
-                        </a>
                         </li>
                       </ul>
                     </div>
