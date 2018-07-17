@@ -129,7 +129,7 @@ export async function getRdsInstanceById(id) {
       });
     });
 
-    return result[0];
+    return result;
   }
   catch (err) { throw (err) }
 }
