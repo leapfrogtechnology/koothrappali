@@ -6,11 +6,7 @@ class Dashboard extends Component {
       <div>
         <div id="page-wrapper">
           <div className="container-fluid">
-            <div>
-              <div>
-                <ProjectList />
-              </div>
-            </div>
+            <ProjectList />
           </div>
         </div>
       </div>
