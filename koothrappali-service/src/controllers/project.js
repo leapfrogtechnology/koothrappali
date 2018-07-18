@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import * as ProjectService from '../services/project';
 import common from '../htttpResponse/response';
+process.env.DEBUG = 'node-vault';
 
 const router = Router();
 
@@ -46,7 +47,7 @@ router.get('/:projectId/buckets', (req, res, next) => {
 * GET bucket details from s3
 */
 router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
-  ProjectService.getBucketByBucketName(req.params.projectId,req.params.bucketName)
+  ProjectService.getBucketByBucketName(req.params.projectId, req.params.bucketName)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
