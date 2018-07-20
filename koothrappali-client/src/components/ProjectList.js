@@ -28,7 +28,7 @@ class ProjectList extends Component {
 
   handleProject(id, e) {
     e.preventDefault();
-    awsService.fetchProjectById(id).then((response) => {
+    awsService.fetchProjectById("1").then((response) => {
       this.setState({ projectInfo: response.data.data });
     })
   }
@@ -61,36 +61,46 @@ class ProjectList extends Component {
                 return (
                   <div className="col-sm-12" key={i}>
                     <div className="white-box analytics-info">
-                      <h3 className="box-title">{project.name}</h3>
+                      <div className="box-title .mserif">{project.name}</div  >
                       <ul className="list-inline two-part">
                         <li>
                           <div id="sparklinedash"></div>
                         </li>
                         <li className="text-right">
                           <i className="ti-arrow-up text-success"></i>
-                          <a className="counter text-success" href="#" onClick={this.handleProject} onClick={this.handleProject.bind(this, project.id)}>{CONSTANTS.EC2}
-                        </a> &emsp;
-                        <a className="counter text-success" href="#" onClick={this.handleS3} onClick={this.handleS3.bind(this, project.id)}>{CONSTANTS.S3}
-                        </a> &emsp;
-                        <a className="counter text-success" href="#" onClick={this.handleRDS} onClick={this.handleRDS.bind(this, project.id)}>{CONSTANTS.RDS}
-                        </a> &emsp;
+                          <a className="counter text-success .sserif" href="#" onClick={this.handleProject} onClick={this.handleProject.bind(this, project.id)}>{CONSTANTS.EC2}
+                          </a> &emsp;
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleS3} onClick={this.handleS3.bind(this, project.id)}>{CONSTANTS.S3}
+                          </a> &emsp;
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleRDS} onClick={this.handleRDS.bind(this, project.id)}>{CONSTANTS.RDS}
+                          </a> &emsp;
                         </li>
                       </ul>
                     </div>
+                    <br />
                   </div>
                 );
               })
             }
           </div>
-          <div className="col-sm-3">
-            {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.NOEC2}
-          </div>
-          <div className="col-sm-3">
-            {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.NOS3}
-          </div>
-          <div className="col-sm-3">
-            {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.NORDS}
-          </div>
+
+          {
+            (!projectInfoLength && !bucketLength && !rdsInfoLength) ? 'PLEASE CLICK ON PROJECT' :
+             <div className="col-sm-9">
+              <div className="row">
+                <div className="col-sm-4">
+                  {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.NOEC2}
+                </div>
+                <div className="col-sm-4">
+                  {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.NOS3}
+                </div>
+                <div className="col-sm-4">
+                  {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.NORDS}
+                </div>
+              </div>
+            </div>
+          }
+
         </div>
       )
     }

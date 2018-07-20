@@ -83,6 +83,7 @@ function getProjectDetails(reservation) {
         break;
       }
     }
+
     result.push({
       project: project,
       state: instance.State,
@@ -186,6 +187,17 @@ export async function getBucketByBucketName(id, bucketName) {
     let response = await bucketObject.promise();
 
     return response;
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * Fetch billing details
+ */
+export async function getEc2Pricing(priceInfo, instances) {
+  try {
+
+    return priceInfo;
   }
   catch (err) { throw (err) }
 }

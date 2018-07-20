@@ -8,14 +8,19 @@ class ProjectInfo extends Component {
   render() {
     if (this.props.item) {
       return (
-        <div>
+        <div className="container">
+          <h2>EC2 Instances</h2>
           {this.props.item.map((instance, i) => {
             return (
-              <div key={i}>
-                {i}&emsp;
-								{instance.project}&emsp;
-								{instance.instanceType}
-              </div>
+              <ul key={i} className="list-group">
+                <li className="list-group-item list-group-item-action">{instance.project}
+                  <a href="#">
+                    <span className="badge">
+                      {instance.instanceType}
+                    </span>
+                  </a>
+                </li>
+              </ul>
             );
           })
           }

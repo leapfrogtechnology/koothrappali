@@ -8,16 +8,18 @@ class RDSInfo extends Component {
   render() {
     if (this.props.rdsItem.length) {
       return (
-        <div>
-          {
-            this.props.rdsItem.map((item, i) =>
-              <div key={i}>
-                <li>{item.DBName}&emsp;
-                {item.DBInstanceClass}&emsp;
-                {item.AllocatedStorage}&emsp;
-                {item.MultiAZ}</li>
-              </div>
-            )}
+        <div className="container">
+          <h2>RDS Instances</h2>
+          <ul className="list-group">
+            {
+              this.props.rdsItem.map((item, i) =>
+                <li key={i} className="list-group-item list-group-item-action">
+                  {item.DBName}&emsp;
+               <a href="#"> <span class="badge">{item.DBInstanceClass}</span></a>
+                <span class="badge">AllocatedStorage: {item.AllocatedStorage}</span>
+                </li>
+              )}
+          </ul>
         </div>
       )
     }

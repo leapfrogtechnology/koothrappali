@@ -6,6 +6,13 @@ process.env.DEBUG = 'node-vault';
 
 const router = Router();
 
+var options = {
+  endpoint: 'https://dev.vault.lftechnology.com',
+  token: '4fe09a91-077f-86d1-19d8-3f646f683876'
+};
+
+var vault = require("node-vault")(options);
+
 /**
  * GET lms projects
  */
@@ -51,4 +58,23 @@ router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
+
+/**
+* GET bucket details from s3
+*/
+router.get('/:projectId/ec2/pricing', (req, res, next) => {
+  let priceInfo;
+
+  vault.read('lftechnology/koothrappali/common/billing/us-east-1/ec2')
+    .then((price) => {
+      priceInfo = price;
+
+      return ProjectService.getProjectById(req.params.projectId);
+    })
+    .then((projectDetails) => ProjectService.getAwsInstance(projectDetails, req.query.instanceName))
+    .then((instances) => ProjectService.getEc2Pricing(priceInfo, instances))
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+})
+
 export default router;

@@ -8,10 +8,13 @@ class Buckets extends Component {
   render() {
     if (this.props.bucketItem.length) {
       return (
-        <div>
+        <div className="container">
+          <h2>S3 Instances</h2>
           {
-            this.props.bucketItem.map((item,i) =>
-              <div key={i}><li>{item}</li></div>
+            this.props.bucketItem.map((item, i) =>
+              <ul key={i} className="list-group">
+                <li className="list-group-item list-group-item-action"><a href="#"><span className="badge">{item}</span></a></li>
+              </ul>
             )}
         </div>
       )
