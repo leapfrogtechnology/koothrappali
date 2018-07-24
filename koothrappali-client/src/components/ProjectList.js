@@ -68,11 +68,11 @@ class ProjectList extends Component {
                         </li>
                         <li className="text-right">
                           <i className="ti-arrow-up text-success"></i>
-                          <a className="counter text-success .sserif" href="#" onClick={this.handleProject} onClick={this.handleProject.bind(this, project.id)}>{CONSTANTS.EC2}
+                          <a className="counter text-success .sserif" href="#" onClick={this.handleProject.bind(this, project.id)}>{CONSTANTS.EC2}
                           </a> &emsp;
-                        <a className="counter text-success .sserif " href="#" onClick={this.handleS3} onClick={this.handleS3.bind(this, project.id)}>{CONSTANTS.S3}
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleS3.bind(this, project.id)}>{CONSTANTS.S3}
                           </a> &emsp;
-                        <a className="counter text-success .sserif " href="#" onClick={this.handleRDS} onClick={this.handleRDS.bind(this, project.id)}>{CONSTANTS.RDS}
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleRDS.bind(this, project.id)}>{CONSTANTS.RDS}
                           </a> &emsp;
                         </li>
                       </ul>
