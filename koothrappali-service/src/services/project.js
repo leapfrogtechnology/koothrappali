@@ -72,9 +72,24 @@ export async function getAwsInstance(projectDetails, instanceName) {
   } catch (err) { throw (err) }
 }
 
+export async function getAwsInstanceByInstanceId(instanceId) {
+  let result = [];
+  let instances = '';
+  var params = { InstanceIds: [instanceId] }
+  try {
+    instances = awsUtils.describeInstances(params);
+    let projectInformations = await instances.promise();
+    projectInformations.Reservations.forEach(reservation => { result.push(getProjectDetails(reservation)); });
+
+    return result[0];
+  } catch (err) { throw (err) }
+}
+
 function getProjectDetails(reservation) {
   let result = [];
   let project = '';
+  let platform = '';
+  let osPlatform = '';
   reservation.Instances.forEach(instance => {
     for (let tag of instance.Tags) {
       if (tag.Key === CONSTANTS.PROJECT) {
@@ -82,10 +97,19 @@ function getProjectDetails(reservation) {
 
         break;
       }
+      if (tag.Key === CONSTANTS.OS_PLATFORM) {
+        platform = tag.Value;
+
+        break;
+      }
     }
+
+    if (platform && platform.toLowerCase().indexOf(CONSTANTS.WINDOWS) != -1) { osPlatform = CONSTANTS.WINDOWS }
+    else { osPlatform = CONSTANTS.LINUX }
 
     result.push({
       project: project,
+      platform: osPlatform,
       state: instance.State,
       imageId: instance.ImageId,
       instanceId: instance.InstanceId,
@@ -198,6 +222,41 @@ export async function getEc2Pricing(priceInfo, instances) {
   try {
 
     return priceInfo;
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * 
+ * @param {String} instancesId 
+ */
+export async function getVolume(instancesId) {
+  try {
+    let result = '';
+    var params = {
+      Filters: [{
+        Name: "attachment.instance-id",
+        Values: [instancesId]
+      }]
+    }
+    let volumes = awsUtils.describeVolumes(params);
+    let response = await volumes.promise();
+    response.Volumes.forEach(volume => { result = volume.Size });
+
+    return result;
+  }
+  catch (err) { throw (err) }
+}
+
+export async function calculateBillingDetail(volumeSize, priceInfo, instanceInfo) {
+  try {
+    let result = '';
+    var months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let monthIndex = new Date().getMonth();
+    let instanceRate = priceInfo[instanceInfo.instanceType];
+    result = (instanceRate * 24 * months[monthIndex]) + (volumeSize * (0.1 / 30) * months[monthIndex]);
+
+    return result;
   }
   catch (err) { throw (err) }
 }

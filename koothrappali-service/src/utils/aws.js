@@ -46,4 +46,7 @@ export function listObjectsV2(params) {
   return new AWS.S3().listObjectsV2(params);
 }
 
+export function describeVolumes(params) {
+  return new AWS.EC2().describeVolumes(params);
+}
 

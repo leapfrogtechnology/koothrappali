@@ -1,17 +1,11 @@
 import { Router } from 'express';
 
 import * as ProjectService from '../services/project';
+import * as VaultService from '../services/vault';
 import common from '../htttpResponse/response';
 process.env.DEBUG = 'node-vault';
 
 const router = Router();
-
-var options = {
-  endpoint: 'https://dev.vault.lftechnology.com',
-  token: '4fe09a91-077f-86d1-19d8-3f646f683876'
-};
-
-var vault = require("node-vault")(options);
 
 /**
  * GET lms projects
@@ -59,20 +53,22 @@ router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
     .catch(err => next(err));
 })
 
-/**
-* GET bucket details from s3
-*/
-router.get('/:projectId/ec2/pricing', (req, res, next) => {
+router.get('/ec2/instances/:instanceId/pricing', (req, res, next) => {
   let priceInfo;
+  let instanceInfo;
 
-  vault.read('lftechnology/koothrappali/common/billing/us-east-1/ec2')
-    .then((price) => {
-      priceInfo = price;
+  ProjectService.getAwsInstanceByInstanceId(req.params.instanceId)
+    .then((instance) => {
+      instanceInfo = instance;
 
-      return ProjectService.getProjectById(req.params.projectId);
+      return VaultService.getEC2Price(instance.platform);
     })
-    .then((projectDetails) => ProjectService.getAwsInstance(projectDetails, req.query.instanceName))
-    .then((instances) => ProjectService.getEc2Pricing(priceInfo, instances))
+    .then((price) => {
+      priceInfo = price.data;
+
+      return ProjectService.getVolume(req.params.instanceId)
+    })
+    .then((volumeSize) => ProjectService.calculateBillingDetail(volumeSize, priceInfo, instanceInfo))
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
