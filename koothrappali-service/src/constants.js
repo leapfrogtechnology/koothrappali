@@ -7,7 +7,7 @@ export default {
   GOOGLE_OAUTH_CALLBACK_URL: process.env.SERVER_HOST_NAME + '/api/auth/oauthcallback',
   LMS_API_KEY: process.env.LMS_API_KEY,
   CONSTANTS: {
-    LINUX : 'linux',
+    LINUX: 'linux',
     WINDOWS: 'windows',
     TAG_KEY: 'tag-key',
     PROJECT: 'Project',
@@ -31,5 +31,20 @@ export default {
     BASE_URL: 'https://dev.vault.lftechnology.com/',
     API_URL: 'lftechnology/koothrappali/common/billing/us-east-1/'
   },
-  VAULT_TOKEN: process.env.VAULT_TOKEN
+  VAULT_TOKEN: process.env.VAULT_TOKEN,
+  PROJECTS: {
+    FHF: 'FHF',
+    CUMMINGS: 'Cummings',
+    REMIT: 'Remit',
+    LINKWAY: 'Linkway',
+    NFPA: 'NFPA',
+    KEYOLO: 'Keyolo',
+    ECOSWEEP: 'Ecosweep',
+    BIIDME: 'Biidme',
+    LEAPFROG: 'Leapfrog',
+    MUSASHI: 'Musashi',
+    LAUDIO: 'Laudio',
+    TRAKTIVITY: 'Traktivity',
+    SUPPERLOAN:'Supperloan'
+  }
 };

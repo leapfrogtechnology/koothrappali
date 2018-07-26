@@ -4,7 +4,7 @@ import CONFIG from '../constants';
 import * as awsUtils from '../utils/aws';
 import LmsProject from '../model/LmsProject';
 
-const { CONSTANTS, DB_INSTANCE_IDENTIFIER } = CONFIG;
+const { CONSTANTS, DB_INSTANCE_IDENTIFIER, PROJECTS } = CONFIG;
 
 /**
  * Get all projects from lms.
@@ -13,6 +13,31 @@ const { CONSTANTS, DB_INSTANCE_IDENTIFIER } = CONFIG;
  */
 export async function getAllProjects() {
   return LmsProject.getAllProjects();
+}
+
+/**
+ * Show only those projects in aws
+ * 
+ * @param {Array} projects 
+ */
+export function filterProjects(projects) {
+  let result = projects.filter(project =>
+    project.name === PROJECTS.FHF ||
+    project.name === PROJECTS.CUMMINGS ||
+    project.name === PROJECTS.REMIT ||
+    project.name === PROJECTS.LINKWAY ||
+    project.name === PROJECTS.NFPA ||
+    project.name === PROJECTS.KEYOLO ||
+    project.name === PROJECTS.ECOSWEEP ||
+    project.name === PROJECTS.BIIDME ||
+    project.name === PROJECTS.LEAPFROG ||
+    project.name === PROJECTS.MUSASHI ||
+    project.name === PROJECTS.LAUDIO ||
+    project.name === PROJECTS.TRAKTIVITY ||
+    project.name === PROJECTS.SUPPERLOAN
+  );
+
+  return result;
 }
 
 /**

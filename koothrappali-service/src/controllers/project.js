@@ -12,6 +12,7 @@ const router = Router();
  */
 router.get('/lms', (req, res, next) => {
   ProjectService.getAllProjects()
+    .then((projects) => ProjectService.filterProjects(projects))
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 });
@@ -53,7 +54,7 @@ router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
     .catch(err => next(err));
 })
 
-router.get('/ec2/instances/:instanceId/pricing', (req, res, next) => {
+router.get('/ec2/instances/:instanceId/price', (req, res, next) => {
   let priceInfo;
   let instanceInfo;
 
