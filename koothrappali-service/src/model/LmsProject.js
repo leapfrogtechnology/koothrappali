@@ -27,7 +27,7 @@ class Project {
 /**
 * Fetch projects detail by Id from lms.
 */
-  static async  getProjectById(id) {
+  static async getProjectById(id) {
     try {
       if (!id) {
         throw new Error("Id not found");

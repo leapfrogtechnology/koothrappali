@@ -54,6 +54,9 @@ router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
     .catch(err => next(err));
 })
 
+/**
+ * GET ec2 instance price
+ */
 router.get('/ec2/instances/:instanceId/price', (req, res, next) => {
   let priceInfo;
   let instanceInfo;
@@ -70,6 +73,37 @@ router.get('/ec2/instances/:instanceId/price', (req, res, next) => {
       return ProjectService.getVolume(req.params.instanceId)
     })
     .then((volumeSize) => ProjectService.calculateBillingDetail(volumeSize, priceInfo, instanceInfo))
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+})
+
+/**
+ * GET rds instance price
+ */
+router.get('/rds/:dbInstanceIdentifier/price', (req, res, next) => {
+  let priceInfo;
+  let instanceInfo;
+  ProjectService.getRdsByDBInstanceIdentifier(req.params.dbInstanceIdentifier)
+    .then((instance) => {
+      instanceInfo = instance;
+
+      return VaultService.getRDSPrice(instance.Engine);
+    })
+    .then((price) => {
+      priceInfo = price.data;
+
+      return ProjectService.calculateRDSBillingDetail(priceInfo, instanceInfo)
+    })
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+})
+
+/**
+ * GET s3 instance price
+ */
+router.get('/:projectId/buckets/:bucketName/price', (req, res, next) => {
+  ProjectService.getBucketByBucketName(req.params.projectId, req.params.bucketName)
+    .then((bucketInfo) => ProjectService.calculateS3Billing(bucketInfo))
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })

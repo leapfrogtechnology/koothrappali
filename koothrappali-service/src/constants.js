@@ -28,6 +28,7 @@ export default {
   },
   VAULT: {
     EC2: '/ec2',
+    RDS: '/rds',
     BASE_URL: 'https://dev.vault.lftechnology.com/',
     API_URL: 'lftechnology/koothrappali/common/billing/us-east-1/'
   },

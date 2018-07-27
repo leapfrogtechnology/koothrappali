@@ -76,7 +76,7 @@ export async function getAllAwsInstances(instanceType, tagKey) {
 export async function getAwsInstance(projectDetails, instanceName) {
   let result = [];
   let instances = '';
-  var params = {
+  let params = {
     Filters: [{
       Name: "tag:Project",
       Values: [instanceName]
@@ -84,9 +84,7 @@ export async function getAwsInstance(projectDetails, instanceName) {
   }
   try {
     awsUtils.updateKey(projectDetails.id);
-    if (!instanceName) {
-      instances = awsUtils.describeInstancesWithoutFilter(params);
-    }
+    if (!instanceName) { instances = awsUtils.describeInstancesWithoutFilter(params); }
     else
       instances = awsUtils.describeInstances(params);
 
@@ -97,10 +95,15 @@ export async function getAwsInstance(projectDetails, instanceName) {
   } catch (err) { throw (err) }
 }
 
+/**
+ * Get aws instnace by id
+ * 
+ * @param {String} instanceId 
+ */
 export async function getAwsInstanceByInstanceId(instanceId) {
   let result = [];
   let instances = '';
-  var params = { InstanceIds: [instanceId] }
+  let params = { InstanceIds: [instanceId] }
   try {
     instances = awsUtils.describeInstances(params);
     let projectInformations = await instances.promise();
@@ -110,6 +113,11 @@ export async function getAwsInstanceByInstanceId(instanceId) {
   } catch (err) { throw (err) }
 }
 
+/**
+ * Get project details
+ * 
+ * @param {Array} reservation 
+ */
 function getProjectDetails(reservation) {
   let result = [];
   let project = '';
@@ -167,19 +175,51 @@ export async function getRdsInstanceById(id) {
   try {
     awsUtils.updateKey(id);
     let result = [];
-    let params = { DBInstanceIdentifier: DB_INSTANCE_IDENTIFIER };
-    let instances = awsUtils.describeDBInstances(params);
+    let instances = awsUtils.describeDBInstances();
     let response = await instances.promise();
+
     response.DBInstances.forEach(database => {
       result.push({
+        Engine: database.Engine,
         DBName: database.DBName,
+        MultiAZ: database.DBInstanceClass,
+        DbiResourceId: database.DbiResourceId,
         DBInstanceClass: database.DBInstanceClass,
         AllocatedStorage: database.AllocatedStorage,
-        MultiAZ: database.DBInstanceClass
+        DBInstanceIdentifier: database.DBInstanceIdentifier
       });
     });
 
     return result;
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * Get rds by instance identifier
+ * 
+ * @param {String} dbInstanceIdentifier 
+ */
+export async function getRdsByDBInstanceIdentifier(dbInstanceIdentifier) {
+  try {
+    let result = [];
+    let params = { DBInstanceIdentifier: dbInstanceIdentifier };
+    let instances = awsUtils.describeDBInstances(params);
+    let response = await instances.promise();
+
+    response.DBInstances.forEach(database => {
+      result.push({
+        Engine: database.Engine,
+        DBName: database.DBName,
+        MultiAZ: database.DBInstanceClass,
+        DbiResourceId: database.DbiResourceId,
+        DBInstanceClass: database.DBInstanceClass,
+        AllocatedStorage: database.AllocatedStorage,
+        DBInstanceIdentifier: database.DBInstanceIdentifier
+      });
+    });
+
+    return result[0];
   }
   catch (err) { throw (err) }
 }
@@ -252,13 +292,14 @@ export async function getEc2Pricing(priceInfo, instances) {
 }
 
 /**
+ * Get volume
  * 
  * @param {String} instancesId 
  */
 export async function getVolume(instancesId) {
   try {
     let result = '';
-    var params = {
+    let params = {
       Filters: [{
         Name: "attachment.instance-id",
         Values: [instancesId]
@@ -273,14 +314,51 @@ export async function getVolume(instancesId) {
   catch (err) { throw (err) }
 }
 
+/**
+ * Calculate billing detail
+ * @param {String} volumeSize 
+ * @param {Object} priceInfo 
+ * @param {Object} instanceInfo 
+ */
 export async function calculateBillingDetail(volumeSize, priceInfo, instanceInfo) {
   try {
     let result = '';
-    var months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     let monthIndex = new Date().getMonth();
     let instanceRate = priceInfo[instanceInfo.instanceType];
     result = (instanceRate * 24 * months[monthIndex]) + (volumeSize * (0.1 / 30) * months[monthIndex]);
 
+    return result;
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * Calculate rds billing detail
+ * 
+ * @param {Object} priceInfo 
+ * @param {Object} instanceInfo 
+ */
+export async function calculateRDSBillingDetail(priceInfo, instanceInfo) {
+  try {
+    let result = '';
+    let months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let monthIndex = new Date().getMonth();
+    let instanceRate = priceInfo[instanceInfo.DBInstanceClass];
+    result = (instanceRate * 24 * months[monthIndex]) + (instanceInfo.AllocatedStorage * (0.115 / 30) * months[monthIndex]);
+
+    return result;
+  }
+  catch (err) { throw (err) }
+}
+
+/**
+ * Calculate s3 billing
+ * 
+ * @param {Object} bucketInfo 
+ */
+export async function calculateS3Billing(bucketInfo) {
+  try {
     return result;
   }
   catch (err) { throw (err) }
