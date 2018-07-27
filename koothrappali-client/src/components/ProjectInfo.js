@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import * as awsService from '../services/AwsService.js';
+
 import Price from './Price.js';
+import * as awsService from '../services/AwsService.js';
 class ProjectInfo extends Component {
   constructor(props) {
     super(props);

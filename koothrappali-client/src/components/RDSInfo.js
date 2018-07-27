@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Price from './Price.js';
 import * as awsService from '../services/AwsService.js';
 class RDSInfo extends Component {
   constructor(props) {

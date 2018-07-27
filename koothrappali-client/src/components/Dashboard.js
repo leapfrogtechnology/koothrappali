@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import ProjectList from './ProjectList';
+
 class Dashboard extends Component {
   render() {
     return (
@@ -12,14 +14,10 @@ class Dashboard extends Component {
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <div className="container-fluid tpadding mpadding ">
-          <div>
-            <div>
-              <ProjectList />
-            </div>
-          </div>
+          <ProjectList />
         </div>
       </div>
-    );
+    )
   }
 }
 export default Dashboard;

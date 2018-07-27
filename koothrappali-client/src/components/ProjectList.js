@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
+import Bucket from './Buckets.js';
+import RDSInfo from './RDSInfo.js';
+import ProjectInfo from './ProjectInfo.js';
+import * as CONSTANTS from '../constants/constants.js';
 import * as lmsService from '../services/LmsService.js';
 import * as awsService from '../services/AwsService.js';
-import ProjectInfo from './ProjectInfo.js';
-import RDSInfo from './RDSInfo.js';
-import Bucket from './Buckets.js';
 
-import * as CONSTANTS from '../constants/constants.js';
 class ProjectList extends Component {
   constructor() {
     super();

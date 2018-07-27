@@ -16,7 +16,8 @@ class Price extends Component {
 					&ensp;
 				[{months[new Date().getMonth()]}]
 	
-				</h5>)
+				</h5>
+				)
 		}
 	}
 }
