@@ -61,7 +61,8 @@ class ProjectList extends Component {
                 return (
                   <div className="col-sm-12" key={i}>
                     <div className="white-box analytics-info">
-                      <div className="box-title .mserif">{project.name}</div  >
+                      <div className="box-title .mserif">{project.name}</div>
+                      <div className="box-title .mserif">{project.projectManager ? project.projectManager.name : ''}</div>
                       <ul className="list-inline two-part">
                         <li>
                           <div id="sparklinedash"></div>
@@ -86,21 +87,20 @@ class ProjectList extends Component {
 
           {
             (!projectInfoLength && !bucketLength && !rdsInfoLength) ? 'PLEASE CLICK ON PROJECT' :
-             <div className="col-sm-9">
-              <div className="row">
-                <div className="col-sm-4">
-                  {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.NOEC2}
-                </div>
-                <div className="col-sm-4">
-                  {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.NOS3}
-                </div>
-                <div className="col-sm-4">
-                  {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.NORDS}
+              <div className="col-sm-9">
+                <div className="row">
+                  <div className="col-sm-4">
+                    {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.NOEC2}
+                  </div>
+                  <div className="col-sm-4">
+                    {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.NOS3}
+                  </div>
+                  <div className="col-sm-4">
+                    {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.NORDS}
+                  </div>
                 </div>
               </div>
-            </div>
           }
-
         </div>
       )
     }

@@ -5,7 +5,7 @@ class Dashboard extends Component {
     return (
       <div>
         <nav className="navbar navbar-light bg-light justify-content-between">
-          <a className="navbar-brand .text-center .lserif" bg-light >Koothrappali</a>
+          <a className="navbar-brand .text-center .lserif  bg-light" >Koothrappali</a>
         </nav>
         <form className="form-inline tpadding lpadding">
           <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />

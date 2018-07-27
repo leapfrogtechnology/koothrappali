@@ -40,3 +40,7 @@ a span
 {
     display: block;
 }
+
+.box{
+	border: 1px solid black;
+}

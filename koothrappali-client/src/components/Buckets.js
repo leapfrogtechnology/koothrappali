@@ -12,9 +12,11 @@ class Buckets extends Component {
           <h2>S3 Instances</h2>
           {
             this.props.bucketItem.map((item, i) =>
-              <ul key={i} className="list-group">
-                <li className="list-group-item list-group-item-action"><a href="#"><span className="badge">{item}</span></a></li>
-              </ul>
+              <div className="col-sm-12 bg-light">
+                <ul key={i} className="list-group">
+                  <li className="list-group-item list-group-item-action"><a href="#"><span className="badge">{item}</span></a></li>
+                </ul>
+              </div>
             )}
         </div>
       )
