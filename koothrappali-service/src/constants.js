@@ -16,21 +16,24 @@ export default {
     INSTANCE_TYPE: 'instance-type',
   },
   LMS: {
+    AWS: 'aws',
     PROJECT: 'project',
     PROJECT_LIST: 'projectlist',
     BASE_URL: 'http://lms.lftechnology.com/api/'
   },
   AWS_KEYS: {
-    ACCESS_KEY_ID_1: process.env.ACCESS_KEY_ID_1,
-    APP_SECRET_KEY_1: process.env.APP_SECRET_KEY_1,
-    ACCESS_KEY_ID_2: process.env.ACCESS_KEY_ID_2,
-    APP_SECRET_KEY_2: process.env.APP_SECRET_KEY_2
+    ACCESS_KEY_ID_LE01: process.env.ACCESS_KEY_ID_LE01,
+    APP_SECRET_KEY_LE01: process.env.APP_SECRET_KEY_LE01,
+    ACCESS_KEY_ID_SB01: process.env.ACCESS_KEY_ID_SB01,
+    APP_SECRET_KEY_SB01: process.env.APP_SECRET_KEY_SB01
   },
   VAULT: {
     EC2: '/ec2',
     RDS: '/rds',
     BASE_URL: 'https://dev.vault.lftechnology.com/',
-    API_URL: 'lftechnology/koothrappali/common/billing/us-east-1/'
+    API_URL: 'lftechnology/koothrappali/common',
+    BILLING_URL:'/billing/us-east-1/',
+    AWS_KEYS_URL: '/aws/keys'
   },
   VAULT_TOKEN: process.env.VAULT_TOKEN,
   PROJECTS: {

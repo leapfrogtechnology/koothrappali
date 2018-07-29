@@ -28,28 +28,38 @@ router.get('/:projectId/instances', (req, res, next) => {
 });
 
 /**
- * GET database instance from rds
+ * GET aws instances by aws id
  */
-router.get('/:projectId/rds', (req, res, next) => {
-  ProjectService.getRdsInstanceById(req.params.projectId)
+router.get('/instances', (req, res, next) => {
+  ProjectService.getProjectByAWSId(req.query.awsId)
+    .then((projectDetails) => ProjectService.getAwsInstance(projectDetails, req.query.instanceName))
+    .then(data => common.success(res, { data }))
+    .catch(err => next(err));
+});
+
+/**
+ * GET database instance from rds by aws id
+ */
+router.get('/rds', (req, res, next) => {
+  ProjectService.getRdsInstanceByAWSId(req.query.awsId)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
 
 /**
- * GET list of buckets from s3
+ * GET list of buckets from s3 by aws id
  */
-router.get('/:projectId/buckets', (req, res, next) => {
-  ProjectService.listBucketNames(req.params.projectId)
+router.get('/buckets', (req, res, next) => {
+  ProjectService.listBucketNames(req.query.awsId)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
 
 /**
-* GET bucket details from s3
+* GET bucket details from s3 by aws id
 */
-router.get('/:projectId/buckets/:bucketName', (req, res, next) => {
-  ProjectService.getBucketByBucketName(req.params.projectId, req.params.bucketName)
+router.get('/buckets/:bucketName', (req, res, next) => {
+  ProjectService.getBucketByBucketName(req.query.awsId, req.params.bucketName)
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
 })
@@ -99,7 +109,7 @@ router.get('/rds/:dbInstanceIdentifier/price', (req, res, next) => {
 })
 
 /**
- * GET s3 instance price
+ * GET s3 instance price by aws id
  */
 router.get('/:projectId/buckets/:bucketName/price', (req, res, next) => {
   ProjectService.getBucketByBucketName(req.params.projectId, req.params.bucketName)

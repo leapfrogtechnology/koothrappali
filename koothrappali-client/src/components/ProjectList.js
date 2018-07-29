@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Bucket from './Buckets.js';
 import RDSInfo from './RDSInfo.js';
 import ProjectInfo from './ProjectInfo.js';
-import * as CONSTANTS from '../constants/constants.js';
+import { CONSTANTS } from '../constants/constants.js';
 import * as lmsService from '../services/LmsService.js';
 import * as awsService from '../services/AwsService.js';
 
@@ -26,23 +26,25 @@ class ProjectList extends Component {
     })
   }
 
-  handleProject(id, e) {
+  handleProject(awsId, e) {
     e.preventDefault();
-    awsService.fetchProjectById("1").then((response) => {
-      this.setState({ projectInfo: response.data.data });
-    })
+    awsService.fetchProjectByAWSId(awsId)
+      .then((response) => {
+        this.setState({ projectInfo: response.data.data });
+      })
   }
 
-  handleS3(id, e) {
+  handleS3(awsId, e) {
     e.preventDefault();
-    awsService.fetchS3BucketById(id).then((response) => {
+    awsService.fetchS3BucketByAWSId(awsId).then((response) => {
       this.setState({ bucketInfo: response.data.data });
     })
   }
 
-  handleRDS(id, e) {
+  handleRDS(awsId, e) {
+    console.log("awsid",awsId);
     e.preventDefault();
-    awsService.fetchRDSById(id).then((response) => {
+    awsService.fetchRDSByAWSId(awsId).then((response) => {
       this.setState({ rdsInfo: response.data.data });
     })
   }
@@ -69,11 +71,11 @@ class ProjectList extends Component {
                         </li>
                         <li className="text-right">
                           <i className="ti-arrow-up text-success"></i>
-                          <a className="counter text-success .sserif" href="#" onClick={this.handleProject.bind(this, project.id)}>{CONSTANTS.EC2}
+                          <a className="counter text-success .sserif" href="#" onClick={this.handleProject.bind(this, project.awsId)}>{CONSTANTS.MESSAGE.EC2}
                           </a> &emsp;
-                        <a className="counter text-success .sserif " href="#" onClick={this.handleS3.bind(this, project.id)}>{CONSTANTS.S3}
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleS3.bind(this, project.awsId)}>{CONSTANTS.MESSAGE.S3}
                           </a> &emsp;
-                        <a className="counter text-success .sserif " href="#" onClick={this.handleRDS.bind(this, project.id)}>{CONSTANTS.RDS}
+                        <a className="counter text-success .sserif " href="#" onClick={this.handleRDS.bind(this, project.awsId)}>{CONSTANTS.MESSAGE.RDS}
                           </a> &emsp;
                         </li>
                       </ul>
@@ -90,13 +92,13 @@ class ProjectList extends Component {
               <div className="col-sm-9">
                 <div className="row">
                   <div className="col-sm-4">
-                    {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.NOEC2}
+                    {projectInfoLength ? <ProjectInfo item={this.state.projectInfo} /> : CONSTANTS.MESSAGE.NOEC2}
                   </div>
                   <div className="col-sm-4">
-                    {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.NOS3}
+                    {bucketLength ? <Bucket bucketItem={this.state.bucketInfo} /> : CONSTANTS.MESSAGE.NOS3}
                   </div>
                   <div className="col-sm-4">
-                    {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.NORDS}
+                    {rdsInfoLength ? <RDSInfo rdsItem={this.state.rdsInfo} /> : CONSTANTS.MESSAGE.NORDS}
                   </div>
                 </div>
               </div>

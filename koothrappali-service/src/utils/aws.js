@@ -1,7 +1,4 @@
 import AWS from 'aws-sdk';
-import CONFIG from '../constants';
-
-const { AWS_KEYS } = CONFIG;
 
 AWS.config.logger = console;
 AWS.config.update({
@@ -10,9 +7,10 @@ AWS.config.update({
   region: process.env.REGION
 });
 
-export function updateKey(id) {
-  let accessKey = `ACCESS_KEY_ID_${id}`;
-  let secretKey = `APP_SECRET_KEY_${id}`;
+export function updateKey(awsId, apiKey) {
+  let AWS_KEYS = apiKey;
+  let accessKey = `ACCESS_KEY_ID_${awsId}`;
+  let secretKey = `APP_SECRET_KEY_${awsId}`;
   let accessKeyValue = AWS_KEYS[accessKey];
   let secretKeyValue = AWS_KEYS[secretKey];
 

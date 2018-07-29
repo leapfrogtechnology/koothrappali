@@ -3,6 +3,7 @@ import _ from 'lodash';
 import CONFIG from '../constants';
 import * as awsUtils from '../utils/aws';
 import LmsProject from '../model/LmsProject';
+import * as vaultUtils from '../utils/vaultUtils';
 
 const { CONSTANTS, DB_INSTANCE_IDENTIFIER, PROJECTS } = CONFIG;
 
@@ -41,12 +42,21 @@ export function filterProjects(projects) {
 }
 
 /**
- * Get project bu id from lms.
+ * Get project by id from lms.
  *
  * @return {Promise}
  */
 export async function getProjectById(id) {
   return LmsProject.getProjectById(id);
+}
+
+/**
+ * Get project by aws id from lms.
+ *
+ * @return {Promise}
+ */
+export async function getProjectByAWSId(awsId) {
+  return LmsProject.getProjectByAWSId(awsId);
 }
 
 /**
@@ -83,7 +93,8 @@ export async function getAwsInstance(projectDetails, instanceName) {
     }]
   }
   try {
-    awsUtils.updateKey(projectDetails.id);
+    let vaultData = await vaultUtils.getAWSKeys();
+    awsUtils.updateKey(projectDetails.awsId,vaultData.data);
     if (!instanceName) { instances = awsUtils.describeInstancesWithoutFilter(params); }
     else
       instances = awsUtils.describeInstances(params);
@@ -171,9 +182,10 @@ export function groupInstances(instances) {
 /**
  * Fetch information from rds database
  */
-export async function getRdsInstanceById(id) {
+export async function getRdsInstanceByAWSId(awsId) {
   try {
-    awsUtils.updateKey(id);
+    let vaultData = await vaultUtils.getAWSKeys();
+    awsUtils.updateKey(awsId,vaultData.data);
     let result = [];
     let instances = awsUtils.describeDBInstances();
     let response = await instances.promise();
@@ -206,7 +218,7 @@ export async function getRdsByDBInstanceIdentifier(dbInstanceIdentifier) {
     let params = { DBInstanceIdentifier: dbInstanceIdentifier };
     let instances = awsUtils.describeDBInstances(params);
     let response = await instances.promise();
-
+console.log("response",response);
     response.DBInstances.forEach(database => {
       result.push({
         Engine: database.Engine,
@@ -250,9 +262,10 @@ export async function getRdsInstances() {
 /**
  * Fetch buckets name from s3
  */
-export async function listBucketNames(id) {
+export async function listBucketNames(awsId) {
   try {
-    awsUtils.updateKey(id);
+    let vaultData = await vaultUtils.getAWSKeys();
+    awsUtils.updateKey(awsId,vaultData.data);
 
     let bucketName = [];
     let buckets = awsUtils.listBuckets();
@@ -267,9 +280,10 @@ export async function listBucketNames(id) {
 /**
  * Fetch details of specific bucket from s3
  */
-export async function getBucketByBucketName(id, bucketName) {
+export async function getBucketByBucketName(awsId, bucketName) {
   try {
-    awsUtils.updateKey(id);
+    let vaultData = await vaultUtils.getAWSKeys();
+    awsUtils.updateKey(awsId,vaultData.data);
 
     let params = { Bucket: bucketName };
     let bucketObject = awsUtils.listObjectsV2(params);
