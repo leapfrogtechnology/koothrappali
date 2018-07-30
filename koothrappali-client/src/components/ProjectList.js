@@ -42,7 +42,6 @@ class ProjectList extends Component {
   }
 
   handleRDS(awsId, e) {
-    console.log("awsid",awsId);
     e.preventDefault();
     awsService.fetchRDSByAWSId(awsId).then((response) => {
       this.setState({ rdsInfo: response.data.data });
