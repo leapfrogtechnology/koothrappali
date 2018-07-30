@@ -94,7 +94,7 @@ export async function getAwsInstance(projectDetails, instanceName) {
   }
   try {
     let vaultData = await vaultUtils.getAWSKeys();
-    awsUtils.updateKey(projectDetails.awsId,vaultData.data);
+    awsUtils.updateKey(projectDetails.awsId, vaultData.data);
     if (!instanceName) { instances = awsUtils.describeInstancesWithoutFilter(params); }
     else
       instances = awsUtils.describeInstances(params);
@@ -185,7 +185,7 @@ export function groupInstances(instances) {
 export async function getRdsInstanceByAWSId(awsId) {
   try {
     let vaultData = await vaultUtils.getAWSKeys();
-    awsUtils.updateKey(awsId,vaultData.data);
+    awsUtils.updateKey(awsId, vaultData.data);
     let result = [];
     let instances = awsUtils.describeDBInstances();
     let response = await instances.promise();
@@ -218,7 +218,7 @@ export async function getRdsByDBInstanceIdentifier(dbInstanceIdentifier) {
     let params = { DBInstanceIdentifier: dbInstanceIdentifier };
     let instances = awsUtils.describeDBInstances(params);
     let response = await instances.promise();
-console.log("response",response);
+    console.log("response", response);
     response.DBInstances.forEach(database => {
       result.push({
         Engine: database.Engine,
@@ -265,7 +265,7 @@ export async function getRdsInstances() {
 export async function listBucketNames(awsId) {
   try {
     let vaultData = await vaultUtils.getAWSKeys();
-    awsUtils.updateKey(awsId,vaultData.data);
+    awsUtils.updateKey(awsId, vaultData.data);
 
     let bucketName = [];
     let buckets = awsUtils.listBuckets();
@@ -280,11 +280,8 @@ export async function listBucketNames(awsId) {
 /**
  * Fetch details of specific bucket from s3
  */
-export async function getBucketByBucketName(awsId, bucketName) {
+export async function getBucketByBucketName(bucketName) {
   try {
-    let vaultData = await vaultUtils.getAWSKeys();
-    awsUtils.updateKey(awsId,vaultData.data);
-
     let params = { Bucket: bucketName };
     let bucketObject = awsUtils.listObjectsV2(params);
     let response = await bucketObject.promise();
@@ -373,7 +370,13 @@ export async function calculateRDSBillingDetail(priceInfo, instanceInfo) {
  */
 export async function calculateS3Billing(bucketInfo) {
   try {
-    return result;
+    let bucketSize = 0;
+    bucketInfo.Contents.map((bucket) => {
+      bucketSize = bucketSize + bucket.Size;
+    });
+    bucketSize = bucketSize / (1024 * 1024 * 1024)
+
+    return bucketSize * 0.02;
   }
   catch (err) { throw (err) }
 }

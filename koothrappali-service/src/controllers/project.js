@@ -55,14 +55,14 @@ router.get('/buckets', (req, res, next) => {
     .catch(err => next(err));
 })
 
-/**
-* GET bucket details from s3 by aws id
-*/
-router.get('/buckets/:bucketName', (req, res, next) => {
-  ProjectService.getBucketByBucketName(req.query.awsId, req.params.bucketName)
-    .then(data => common.success(res, { data }))
-    .catch(err => next(err));
-})
+// /**
+// * GET bucket details from s3 by aws id
+// */
+// router.get('/buckets/:bucketName', (req, res, next) => {
+//   ProjectService.getBucketByBucketName(req.query.awsId, req.params.bucketName)
+//     .then(data => common.success(res, { data }))
+//     .catch(err => next(err));
+// })
 
 /**
  * GET ec2 instance price
@@ -111,8 +111,8 @@ router.get('/rds/:dbInstanceIdentifier/price', (req, res, next) => {
 /**
  * GET s3 instance price by aws id
  */
-router.get('/:projectId/buckets/:bucketName/price', (req, res, next) => {
-  ProjectService.getBucketByBucketName(req.params.projectId, req.params.bucketName)
+router.get('/buckets/:bucketName/price', (req, res, next) => {
+  ProjectService.getBucketByBucketName(req.params.bucketName)
     .then((bucketInfo) => ProjectService.calculateS3Billing(bucketInfo))
     .then(data => common.success(res, { data }))
     .catch(err => next(err));
