@@ -13,7 +13,6 @@ class RDSInfo extends Component {
   handleInstance(id, e) {
     e.preventDefault();
     awsService.fetchRDSInstancePrice(id).then((response) => {
-      console.log(response);
       this.setState({ price: response.data });
     })
   }

@@ -20,3 +20,7 @@ export function fetchEC2InstancePrice(id) {
 export function fetchRDSInstancePrice(id) {
     return httpUtil.get(`${CONSTANTS.API_CALLER.BASE_URL}/${CONSTANTS.API_CALLER.RDS}/${id}/${CONSTANTS.API_CALLER.PRICE}`);
 }
+
+export function fetchS3InstancePrice(bucketName) {
+    return httpUtil.get(`${CONSTANTS.API_CALLER.BASE_URL}/${CONSTANTS.API_CALLER.BUCKETS}/${bucketName}/${CONSTANTS.API_CALLER.PRICE}`);
+}
