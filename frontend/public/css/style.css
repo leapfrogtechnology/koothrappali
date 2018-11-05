@@ -1,0 +1,68 @@
+.bg-secondary {
+  background: #f0f3f1 !important;
+}
+.border-secondary {
+  border-color: #dedede !important;
+}
+.badge-primary {
+  background: #80aad6 !important;
+}
+.card-wrapper {
+  padding: 1rem 1rem 1.5rem 1rem;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: left !important;
+}
+.card-wrapper h2 {
+  padding-left: 8px;
+}
+.card {
+  display: inline-block;
+  padding:  0;
+  max-width: 18rem;
+  width:  18rem;
+  margin: .5rem;  
+ }
+ .card a {
+   color: #2ECC71;  
+  }
+.type {
+  float: left;
+  color: #167ffb;
+}
+.ip-address {
+  float: right;
+  color: #8c939a;
+}
+.card-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #a2a2a2;
+}
+.box-shadow {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+}
+.card-header {
+  position: relative;
+}
+.card-notify-badge {
+  position: absolute;
+  left: -10px;
+  top: -20px;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+  border-radius: 30px 30px 30px 30px; 
+}
+.card-stop.border-secondary {
+  border-color: #f00 !important;
+}
+.card-available.border-secondary {
+  border-color: #2ECC71 !important;
+}
+
+.badge {
+  white-space: normal;
+  text-align: left;
+}
