@@ -1,26 +1,47 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+
+import * as config from './config';
+import GridView from '../components/GridView/Index';
+import TableView from '../components/TableView/Index';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: null,
+      isGridView: true
+    };
+  }
+
+  componentDidMount() {
+    fetch(config.apiBaseUrl)
+      .then(response => response.json())
+      .then(data => this.setState({ data }));
+  }
+
+  showGridView = () => {
+    this.setState({ isGridView: true })
+  }
+
+  showTableView = () => {
+    this.setState({ isGridView: false })
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <main role="main" className="container-fluid">
+        <div className="btn-group float-right">
+          <a href="#grid-view" className={this.state.isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showGridView}>Grid View</a>
+          <a href="#table-view" className={!this.state.isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showTableView}>Table View</a>
+        </div>
+        {this.state.data ?
+          this.state.isGridView ?
+            <GridView projects={this.state.data} />
+            : <TableView projects={this.state.data} /> : <p>Loading...</p>
+        }
+      </main>
     );
   }
 }

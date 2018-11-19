@@ -1,15 +1,18 @@
-import React, { PureComponent } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Project from './Project/Index';
 
-export default class GridView extends PureComponent {
-    render() {
-        return (
-            <section>
-                {this.props.projects.map(function (project, i) {
-                    return <Project project={project} key={i}/>
-                })}
-            </section>
-        )
-    }
-}
+const GridView = (props) => (
+  <section>
+    {props.projects.map((project, i) => {
+      return <Project project={project} key={i} />
+    })}
+  </section>
+);
+
+GridView.propTypes = {
+  projects: PropTypes.array
+};
+
+export default GridView;

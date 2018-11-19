@@ -1,9 +1,7 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-export default class DescriptionItem extends PureComponent {
-  render() {
-    return (
-        <li className="list-group-item">{this.props.detail}</li>
-    )
-  }
-}
+const DescriptionItem = (props) => (
+  <li className="list-group-item">{props.detail}</li>
+);
+
+export default DescriptionItem;

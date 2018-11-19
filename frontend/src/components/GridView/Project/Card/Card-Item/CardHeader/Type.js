@@ -1,9 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
-export default class Type extends React.Component {
-    render() {
-        return (
-            <span className="type">{this.props.type}</span>
-        )
-    }
-}
+const Type = (props) => (
+  <span className="type">{props.type}</span>
+);
+
+Type.propTypes = {
+  type: PropTypes.string
+};
+
+export default Type;

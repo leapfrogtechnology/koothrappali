@@ -1,9 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
-export default class IP extends React.Component {
-    render() {
-        return (
-            <span className="ip-address">{this.props.ip}</span>
-        )
-    }
-}
+const IP = (props) => (
+  <span className="ip-address">{props.ip}</span>
+);
+
+IP.propTypes = {
+  ip: PropTypes.string
+};
+
+export default IP;

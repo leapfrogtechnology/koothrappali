@@ -1,14 +1,8 @@
-import React, { PureComponent } from 'react'
-// import Project from '../GridView/Project'
+import React from 'react'
 
-export default class TableView extends PureComponent {
-    render() {
-        return (
-            <table className="table table-striped">
-                {/* {this.props.projects.map(function (project) {
-                    return <Project project={project} isTable="true" />
-                })} */}
-            </table>
-        )
-    }
-}
+const TableView = () => (
+    <table className="table table-striped">
+    </table>
+);
+
+export default TableView;

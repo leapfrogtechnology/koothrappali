@@ -1,6 +1,12 @@
 import React from 'react';
-export default class EnvironmentHeading extends React.Component {
-    render() {
-        return <h2>Staging</h2>
-    }
-}
+import PropTypes from 'prop-types';
+
+const EnvironmentHeading = (props) => (
+  <h2>{props.title}</h2>
+)
+
+EnvironmentHeading.propTypes = {
+  title: PropTypes.string
+};
+
+export default EnvironmentHeading;

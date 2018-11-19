@@ -1,14 +1,25 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
 
 import Card from './Card/Index';
 
-export default class Project extends PureComponent {
-    render() {
-        return (<section>
-            <h1>{this.props.project.project}</h1>
-            {this.props.project.environments.map(function (environment, i) {
-                return <Card environment={environment} key={i} />
-            })}
-        </section>)
-    }
-}
+const Project = (props) => {
+  const { project } = props;
+  return (
+    <section>
+      <h1>{project.project}</h1>
+      {project.environments.map((environment, i) => {
+        return <Card environment={environment} key={i} />
+      })}
+    </section>
+  );
+};
+
+Project.propTypes = {
+  project: PropTypes.shape({
+    project: PropTypes.string,
+    environments: PropTypes.array
+  })
+};
+
+export default Project;

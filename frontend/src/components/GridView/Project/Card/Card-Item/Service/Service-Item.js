@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class ServiceItem extends React.Component {
-    render() {
-        return (
-            <span className="badge badge-pill badge-primary">{this.props.service}</span>
-        )
-    }
-}
+const ServiceItem = (props) => (
+  <span className="badge badge-pill badge-primary">{props.service}</span>
+);
+
+ServiceItem.propTypes = {
+  service: PropTypes.string
+};
+
+export default ServiceItem;

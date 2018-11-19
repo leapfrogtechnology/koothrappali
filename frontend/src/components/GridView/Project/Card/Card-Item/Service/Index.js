@@ -1,16 +1,18 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import ServiceItem from './Service-Item';
 
-export default class Service extends PureComponent {
-    render() {
-        return (
-            <div className="card-body text-secondary">
-                {this.props.services.map(function (service, i) {
-                    return <ServiceItem service={service} key={i} />
-                })}
-            </div>
-        )
-    }
-}
+const Service = (props) => (
+  <div className="card-body text-secondary">
+    {props.services.map((service, i) => {
+      return <ServiceItem service={service} key={i} />
+    })}
+  </div>
+);
 
+Service.propTypes = {
+  services: PropTypes.array
+};
+
+export default Service;
