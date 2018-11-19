@@ -1,4 +1,4 @@
-# Koothrapali React Web Application
+# Koothrappali React Web Application
 
 ## Installations
 ```js
