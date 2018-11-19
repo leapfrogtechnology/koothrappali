@@ -5,9 +5,9 @@ import Project from './Project/Index';
 
 const GridView = (props) => (
   <section>
-    {props.projects.map((project, i) => {
-      return <Project project={project} key={i} />
-    })}
+    {props.projects.map((project, i) => (
+      <Project project={project} key={i} />
+    ))}
   </section>
 );
 

@@ -5,12 +5,13 @@ import Card from './Card/Index';
 
 const Project = (props) => {
   const { project } = props;
+
   return (
     <section>
       <h1>{project.project}</h1>
-      {project.environments.map((environment, i) => {
-        return <Card environment={environment} key={i} />
-      })}
+      {project.environments.map((environment, i) => (
+        <Card environment={environment} key={i} />
+      ))}
     </section>
   );
 };

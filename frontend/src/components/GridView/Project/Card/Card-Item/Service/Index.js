@@ -5,9 +5,9 @@ import ServiceItem from './Service-Item';
 
 const Service = (props) => (
   <div className="card-body text-secondary">
-    {props.services.map((service, i) => {
-      return <ServiceItem service={service} key={i} />
-    })}
+    {props.services.map((service, i) => (
+      <ServiceItem service={service} key={i} />
+    ))}
   </div>
 );
 

@@ -7,6 +7,7 @@ import Heading from './Heading';
 
 const CardHeader = (props) => {
   const { server } = props;
+
   return (
     <div className="card-header bg-secondary border-secondary clearfix">
       <Heading title={server.name} />

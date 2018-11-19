@@ -7,6 +7,7 @@ import Description from './Description/Index';
 
 const CardItem = (props) => {
   const { server } = props;
+
   return (
     <div className="card border-secondary mb-3 box-shadow">
       <CardHeader server={server} />

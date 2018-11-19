@@ -6,13 +6,14 @@ import EnvironmentHeading from './Environment-Heading';
 
 const Card = (props) => {
   const { environment } = props;
+
   return (
     <section className="card-wrapper">
       <EnvironmentHeading title={environment.title} />
       <div className="d-flex justify-content-left flex-wrap">
-        {environment.servers.map((server, j) => {
-          return <CardItem server={server} key={j} />
-        })}
+        {environment.servers.map((server, j) => (
+          <CardItem server={server} key={j} />
+        ))}
       </div>
     </section>
   );

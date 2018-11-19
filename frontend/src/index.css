@@ -1,340 +1,338 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 *,
 ::after,
 ::before {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 main,
 section {
-    display: block;
+  display: block;
 }
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    text-align: left;
-    background-color: #fff;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
 }
 
 h1 {
-    font-size: 2rem
+  font-size: 2rem
 }
 
 h1,
 h2,
 h3 {
-    margin-top: 0;
-    margin-bottom: .5rem;
+  margin-top: 0;
+  margin-bottom: .5rem;
 }
 
 ul {
-    margin-top: 0;
-    margin-bottom: 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 a {
-    color: #007bff;
-    text-decoration: none;
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
 }
 
 a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 h2,
 h3 {
-    margin-bottom: .5rem;
-    font-family: inherit;
-    font-weight: 500;
-    line-height: 1.2;
-    color: inherit;
+  margin-bottom: .5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
 }
 
 h2 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 h3 {
-    font-size: 1.75rem;
+  font-size: 1.75rem;
 }
 
 .container-fluid {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .card {
-    position: relative;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .25rem;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
 }
 
 .card>.list-group:last-child .list-group-item:last-child {
-    border-bottom-right-radius: .25rem;
-    border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
 }
 
 .card-body {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding: 1.25rem;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
 }
 
 .card-header {
-    padding: .75rem 1.25rem;
-    margin-bottom: 0;
-    background-color: rgba(0, 0, 0, .03);
-    border-bottom: 1px solid rgba(0, 0, 0, .125);
+  padding: .75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, .03);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
 .card-header:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
 }
 
 .card-header+.list-group .list-group-item:first-child {
-    border-top: 0;
+  border-top: 0;
 }
 
 .badge {
-    display: inline-block;
-    padding: .25em .4em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25rem;
+  display: inline-block;
+  padding: .25em .4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
 }
 
 .badge:empty {
-    display: none;
+  display: none;
 }
 
 .badge-pill {
-    padding-right: .6em;
-    padding-left: .6em;
-    border-radius: 10rem;
+  padding-right: .6em;
+  padding-left: .6em;
+  border-radius: 10rem;
 }
 
 .badge-primary {
-    color: #fff;
-    background-color: #007bff;
+  color: #fff;
+  background-color: #007bff;
 }
 
 .list-group {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    padding-left: 0;
-    margin-bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 
 .list-group-item {
-    position: relative;
-    display: block;
-    padding: .75rem 1.25rem;
-    margin-bottom: -1px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, .125);
+  position: relative;
+  display: block;
+  padding: .75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
 }
 
 .list-group-item:first-child {
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
 }
 
 .list-group-item:last-child {
-    margin-bottom: 0;
-    border-bottom-right-radius: .25rem;
-    border-bottom-left-radius: .25rem;
+  margin-bottom: 0;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
 }
 
 .list-group-item:focus,
 .list-group-item:hover {
-    z-index: 1;
-    text-decoration: none;
+  z-index: 1;
+  text-decoration: none;
 }
 
 .list-group-item:disabled {
-    color: #6c757d;
-    background-color: #fff;
+  color: #6c757d;
+  background-color: #fff;
 }
 
 .list-group-flush .list-group-item {
-    border-right: 0;
-    border-left: 0;
-    border-radius: 0;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
 }
 
 .list-group-flush:last-child .list-group-item:last-child {
-    border-bottom: 0;
+  border-bottom: 0;
 }
 
 .bg-secondary {
-    background-color: #6c757d !important;
+  background-color: #6c757d !important;
 }
 
 .border-secondary {
-    border-color: #6c757d !important;
+  border-color: #6c757d !important;
 }
 
 .clearfix::after {
-    display: block;
-    clear: both;
-    content: "";
+  display: block;
+  clear: both;
+  content: "";
 }
 
 .d-flex {
-    display: -webkit-box !important;
-    display: -ms-flexbox !important;
-    display: flex !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
 }
 
 .flex-wrap {
-    -ms-flex-wrap: wrap !important;
-    flex-wrap: wrap !important;
+  -ms-flex-wrap: wrap !important;
+  flex-wrap: wrap !important;
 }
 
 .mb-3 {
-    margin-bottom: 1rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .text-secondary {
-    color: #6c757d !important;
+  color: #6c757d !important;
 }
 
 @media print {
-    *,
-    ::after,
-    ::before {
-        text-shadow: none !important;
-        box-shadow: none !important;
-    }
-    a:not(.btn) {
-        text-decoration: underline;
-    }
-    h2,
-    h3 {
-        orphans: 3;
-        widows: 3;
-    }
-    h2,
-    h3 {
-        page-break-after: avoid;
-    }
-    body {
-        min-width: 992px !important;
-    }
-    .badge {
-        border: 1px solid #000;
-    }
+  *,
+  ::after,
+  ::before {
+      text-shadow: none !important;
+      box-shadow: none !important;
+  }
+  a:not(.btn) {
+      text-decoration: underline;
+  }
+  h2,
+  h3 {
+      orphans: 3;
+      widows: 3;
+  }
+  h2,
+  h3 {
+      page-break-after: avoid;
+  }
+  body {
+      min-width: 992px !important;
+  }
+  .badge {
+      border: 1px solid #000;
+  }
 }
 
-/*! CSS Used from: file:///Users/samir/Downloads/grid-view/css/style.css */
-
 .bg-secondary {
-    background: #f0f3f1 !important;
+  background: #f0f3f1 !important;
 }
 
 .border-secondary {
-    border-color: #dedede !important;
+  border-color: #dedede !important;
 }
 
 .badge-primary {
-    background: #80aad6 !important;
+  background: #80aad6 !important;
 }
 
 .card-wrapper {
-    padding: 1rem 1rem 1.5rem 1rem;
-    margin-right: auto !important;
-    margin-left: auto !important;
-    text-align: left !important;
+  padding: 1rem 1rem 1.5rem 1rem;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: left !important;
 }
 
 .card-wrapper h2 {
-    padding-left: 8px;
+  padding-left: 8px;
 }
 
 .card {
-    display: inline-block;
-    padding: 0;
-    max-width: 18rem;
-    width: 18rem;
-    margin: .5rem;
+  display: inline-block;
+  padding: 0;
+  max-width: 18rem;
+  width: 18rem;
+  margin: .5rem;
 }
 
 .card a {
-    color: #2ECC71;
+  color: #2ECC71;
 }
 
 .type {
-    float: left;
-    color: #167ffb;
+  float: left;
+  color: #167ffb;
 }
 
 .ip-address {
-    float: right;
-    color: #8c939a;
+  float: right;
+  color: #8c939a;
 }
 
 .card-header h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #a2a2a2;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #a2a2a2;
 }
 
 .box-shadow {
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);
 }
 
 .card-header {
-    position: relative;
+  position: relative;
 }
 
 .card-stop.border-secondary {
-    border-color: #f00 !important;
+  border-color: #f00 !important;
 }
 
 .badge {
-    white-space: normal;
-    text-align: left;
+  white-space: normal;
+  text-align: left;
 }
