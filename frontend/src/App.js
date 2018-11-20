@@ -2,6 +2,7 @@ import './App.css';
 import React, { Component } from 'react';
 
 import * as config from './config';
+import * as http from './utils/http';
 import GridView from '../components/GridView/Index';
 import TableView from '../components/TableView/Index';
 
@@ -16,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(config.apiBaseUrl)
+    http.get(config.apiBaseUrl)
       .then(response => response.json())
       .then(data => this.setState({ data }));
   }
@@ -30,16 +31,17 @@ class App extends Component {
   }
 
   render() {
+    const { isGridView, data } = this.state
     return (
       <main role="main" className="container-fluid">
         <div className="btn-group float-right">
-          <a href="#grid-view" className={this.state.isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showGridView}>Grid View</a>
-          <a href="#table-view" className={!this.state.isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showTableView}>Table View</a>
+          <a href="#grid-view" className={isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showGridView}>Grid View</a>
+          <a href="#table-view" className={!isGridView ? 'btn btn-success' : 'btn btn-primary'} onClick={this.showTableView}>Table View</a>
         </div>
-        {this.state.data ?
-          this.state.isGridView ?
-            <GridView projects={this.state.data} />
-            : <TableView projects={this.state.data} /> : <p>Loading...</p>
+        {data ?
+          isGridView ?
+            <GridView projects={data} />
+            : <TableView projects={data} /> : <p>Loading...</p>
         }
       </main>
     );
