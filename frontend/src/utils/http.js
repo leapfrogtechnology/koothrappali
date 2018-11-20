@@ -1,9 +1,12 @@
-import * as axios from 'axios'
+import axios from 'axios';
 
-/**
- * GET function to fetch API using Axios
- * @param {string} url
- */
-export function get(url) {
-  return axios.get(url).then(response => response.json());
-}
+import config from '../../config';
+
+const http = axios.create({
+  baseURL: config.baseURI,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export default http;

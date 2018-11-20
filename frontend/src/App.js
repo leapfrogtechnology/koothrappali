@@ -17,7 +17,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    http.get(config.apiBaseUrl)
+    http.get("/data")
+      .then(response => response.json())
       .then(data => this.setState({ data }));
   }
 
