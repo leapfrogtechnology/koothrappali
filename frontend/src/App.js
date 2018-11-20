@@ -17,21 +17,22 @@ class App extends Component {
   }
 
   componentDidMount() {
-    http.get("/data")
+    http.get('/data')
       .then(response => response.json())
       .then(data => this.setState({ data }));
   }
 
   showGridView = () => {
-    this.setState({ isGridView: true })
+    this.setState({ isGridView: true });
   }
 
   showTableView = () => {
-    this.setState({ isGridView: false })
+    this.setState({ isGridView: false });
   }
 
   render() {
-    const { isGridView, data } = this.state
+    const { isGridView, data } = this.state;
+    
     return (
       <main role="main" className="container-fluid">
         <div className="btn-group float-right">
