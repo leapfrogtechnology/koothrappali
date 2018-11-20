@@ -1,9 +1,9 @@
-import 'whatwg-fetch'
+import * as axios from 'axios'
 
-export function get(url, raw = false) {
-  if (raw) {
-    return fetch(url);
-  }
-
-  return fetch(url).then(response => response.json());
+/**
+ * GET function to fetch API using Axios
+ * @param {string} url
+ */
+export function get(url) {
+  return axios.get(url).then(response => response.json());
 }
