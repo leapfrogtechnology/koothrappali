@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import DescriptionItem from './Description-Item';
 
-const Description = (props) => {
+const Description = props => {
   const { details } = props;
 
   return (
@@ -21,8 +21,8 @@ Description.propTypes = {
     domain: PropTypes.string,
     os: PropTypes.string,
     account: PropTypes.string,
-    location: PropTypes.string,
+    location: PropTypes.string
   })
-}
+};
 
 export default Description;

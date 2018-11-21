@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import Card from './Card/Index';
 
-const Project = (props) => {
+const Project = props => {
   const { project } = props;
 
   return (

@@ -5,7 +5,7 @@ import IP from './IP';
 import Type from './Type';
 import Heading from './Heading';
 
-const CardHeader = (props) => {
+const CardHeader = props => {
   const { server } = props;
 
   return (
@@ -20,8 +20,8 @@ const CardHeader = (props) => {
 CardHeader.propTypes = {
   server: PropTypes.shape({
     name: PropTypes.string,
-    type: PropTypes.type,
-    ip: PropTypes.ip
+    type: PropTypes.string,
+    ip: PropTypes.string
   })
 };
 

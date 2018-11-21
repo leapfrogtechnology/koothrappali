@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CardItem from './Card-Item/Index'
+import CardItem from './Card-Item/Index';
 import EnvironmentHeading from './Environment-Heading';
 
-const Card = (props) => {
+const Card = props => {
   const { environment } = props;
 
   return (
