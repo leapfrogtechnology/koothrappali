@@ -35,14 +35,14 @@ class App extends Component {
           <a
             href="#grid-view"
             className={isGridView ? 'btn btn-success' : 'btn btn-primary'}
-            onClick={this.showGridView}
+            onClick={this.showGridView.bind(this)}
           >
             Grid View
           </a>
           <a
             href="#table-view"
             className={!isGridView ? 'btn btn-success' : 'btn btn-primary'}
-            onClick={this.showTableView}
+            onClick={this.showTableView.bind(this)}
           >
             Table View
           </a>
