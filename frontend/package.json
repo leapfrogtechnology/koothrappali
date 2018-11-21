@@ -1,7 +1,8 @@
 {
-  "name": "frontend",
+  "name": "Koothrappali - Frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Sameer Poudel <sameerpoudel@lftechnology.com>",
   "dependencies": {
     "axios": "^0.18.0",
     "eslint": "5.6.0",
@@ -13,14 +14,29 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "pretest": "eslint --ignore-path .eslintignore . --fix"
+    "lint": "eslint --ignore-path .eslintignore  'src/**/*.{ts,js}'",
+    "lint:fix": "eslint --ignore-path .eslintignore  'src/**/*.{ts,js}' --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{ts,js}": [
+        "eslint --fix",
+        "prettier --single-quote --parser typescript --print-width 120 --write './**/*.{ts,js}'",
+        "git add"
+      ],
+      "*.md": [
+        "prettier --parser markdown --print-width 120 --write './**/*.md'",
+        "git add"
+      ]
+    }
   },
   "browserslist": [
     ">0.2%",
