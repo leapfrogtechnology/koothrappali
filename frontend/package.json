@@ -35,7 +35,7 @@
   "lint-staged": {
     "linters": {
       "*.{ts,js}": [
-        "eslint --fix",
+        "eslint --ignore-path .eslintignore  'src/**/*.{ts,js}' --fix",
         "prettier --single-quote --parser typescript --print-width 120 --write './**/*.{ts,js}'",
         "git add"
       ],
