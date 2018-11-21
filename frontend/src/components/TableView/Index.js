@@ -1,8 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-const TableView = () => (
-  <table className="table table-striped">
-  </table>
-);
+const TableView = () => <table className="table table-striped" />;
 
 export default TableView;

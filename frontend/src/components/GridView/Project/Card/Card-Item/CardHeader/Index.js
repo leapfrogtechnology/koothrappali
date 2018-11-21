@@ -5,7 +5,7 @@ import IP from './IP';
 import Type from './Type';
 import Heading from './Heading';
 
-const CardHeader = (props) => {
+const CardHeader = props => {
   const { server } = props;
 
   return (
