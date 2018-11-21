@@ -13,6 +13,6 @@ const GridView = props => (
 
 GridView.propTypes = {
   projects: PropTypes.array
-}
+};
 
 export default GridView;
