@@ -1,4 +1,5 @@
 import { version, title, description } from '../package.json';
+
 const config = {
   app: {
     name: title || 'Koothrapali',
