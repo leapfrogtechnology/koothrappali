@@ -1,7 +1,8 @@
 {
   "name": "koothrappali-backend",
-  "version": "1.0.0",
-  "description": "Koothrappali Backend",
+  "title": "Koothrapali Backend",
+  "version": "0.0.1",
+  "description": "Koothrappali API for AWS",
   "scripts": {
     "start": "node dist",
     "prestart": "npm run build",

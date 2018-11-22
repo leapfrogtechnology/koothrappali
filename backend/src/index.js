@@ -14,17 +14,14 @@ import * as errorHandler from './middlewares/errorHandler';
 
 // Initialize Raven
 // https://docs.sentry.io/clients/node/integrations/express/
-Raven.config(process.env.SENTRY_DSN).install();
+Raven.config(config.sentry.dsn).install();
 
 const app = express();
 
-const APP_PORT = config.app.port;
-const APP_HOST = config.app.host;
-
 const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 
-app.set('port', APP_PORT);
-app.set('host', APP_HOST);
+app.set('port', config.app.port);
+app.set('host', config.app.host);
 
 app.locals.title = config.app.name;
 app.locals.version = config.app.version;
