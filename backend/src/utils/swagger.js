@@ -1,6 +1,7 @@
 import path from 'path';
-import config from '../config';
 import swaggerJSDoc from 'swagger-jsdoc';
+
+import config from '../config';
 
 /**
  * Swagger definition.
