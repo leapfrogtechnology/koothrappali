@@ -4,23 +4,72 @@
     "node": true,
     "mocha": true
   },
-  "extends": ["eslint-config-leapfrog", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "eslint-config-leapfrog",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
-    "curly": "error",
+    "semi": 2,
+    "curly": 2,
+    "no-var": 2,
+    "eqeqeq": 2,
+    "eol-last": 2,
+    "key-spacing": 2,
+    "require-await": 2,
+    "spaced-comment": 2,
+    "space-infix-ops": 2,
+    "no-return-await": 2,
+    "no-await-in-loop": 2,
+    "space-before-blocks": 2,
+    "newline-before-return": 2,
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "object-curly-spacing": [
+      2,
+      "always"
+    ],
     "camelcase": [
-      "error",
+      2,
       {
         "properties": "never"
+      }
+    ],
+    "quotes": [
+      2,
+      "single",
+      {
+        "allowTemplateLiterals": true
       }
     ],
     "no-unused-vars": [
       "error",
       {
         "argsIgnorePattern": "next"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "bracketSpacing": true,
+        "printWidth": 120
       }
     ],
     "require-jsdoc": [
