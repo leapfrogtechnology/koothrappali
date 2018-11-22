@@ -1,12 +1,10 @@
 import fs from 'fs';
 import cors from 'cors';
-import path from 'path';
 import Raven from 'raven';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import express from 'express';
 import routes from './routes';
-import favicon from 'serve-favicon';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import json from './middlewares/json';
@@ -34,7 +32,6 @@ app.locals.version = process.env.APP_VERSION;
 // This request handler must be the first middleware on the app
 app.use(Raven.requestHandler());
 
-app.use(favicon(path.join(__dirname, '/../public', 'favicon.ico')));
 app.use(cors());
 app.use(helmet());
 app.use(compression());
