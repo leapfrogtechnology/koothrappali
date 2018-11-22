@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import express from 'express';
 import routes from './routes';
+import config from './config';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import json from './middlewares/json';
@@ -17,18 +18,16 @@ Raven.config(process.env.SENTRY_DSN).install();
 
 const app = express();
 
-const APP_PORT =
-  (process.env.NODE_ENV === 'test' ? process.env.TEST_APP_PORT : process.env.APP_PORT) || process.env.PORT || '3000';
-const APP_HOST = process.env.APP_HOST || '0.0.0.0';
+const APP_PORT = config.app.port;
+const APP_HOST = config.app.host;
 
 const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 
 app.set('port', APP_PORT);
 app.set('host', APP_HOST);
 
-app.locals.title = process.env.APP_NAME;
-app.locals.version = process.env.APP_VERSION;
-
+app.locals.title = config.app.name;
+app.locals.version = config.app.version;
 // This request handler must be the first middleware on the app
 app.use(Raven.requestHandler());
 
