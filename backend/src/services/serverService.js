@@ -1,19 +1,14 @@
 import * as aws from '../aws';
 
+import { flatMap } from 'lodash';
+
 /**
  * Async function to get all servers from all regions.
  */
 export async function fetchAllServers() {
-  let servers = {
-    projects: [],
-    instances: []
-  };
   const promises = Object.keys(aws.default.ec2).map(key => fetchAllServersOfRegion(key));
   const results = await Promise.all(promises);
-  results.map(data => {
-    servers.projects.push(...data.projects);
-    servers.instances.push(...data.instances);
-  });
+  const servers = flatMap(results, result => result);
 
   return servers;
 }
@@ -29,17 +24,16 @@ export function fetchAllServersOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      const instances = [],
-        projects = [];
-      data.Reservations.map(reservation => {
-        reservation.Instances.map(instance => {
+      let instances = data.Reservations.map(reservation => {
+        return reservation.Instances.map(instance => {
           instance.type = 'ec2';
+          instance.project = 'NoProject';
           instance.Tags.map(tag => {
             const value = tag.Value;
+
             switch (tag.Key) {
               case 'Project':
                 instance.project = value;
-                projects.push(tag.Value);
                 break;
               case 'Deployment':
                 instance.environment = tag.Value;
@@ -55,10 +49,12 @@ export function fetchAllServersOfRegion(regionName) {
                 break;
             }
           });
-          instances.push(instance);
+
+          return instance;
         });
       });
-      const response = { projects: projects, instances: instances };
+
+      const response = flatMap(instances, result => result);
 
       resolve(response);
     });

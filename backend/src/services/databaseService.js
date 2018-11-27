@@ -1,19 +1,14 @@
 import * as aws from '../aws';
 
+import { flatMap } from 'lodash';
+
 /**
  * Async function to get all databases from all regions.
  */
 export async function fetchAllDatabases() {
-  let databases = {
-    projects: [],
-    instances: []
-  };
   const promises = Object.keys(aws.default.rds).map(key => fetchAllDatabasesOfRegion(key));
   const results = await Promise.all(promises);
-  results.map(data => {
-    databases.projects.push(...data.projects);
-    databases.instances.push(...data.instances);
-  });
+  const databases = flatMap(results, result => result);
 
   return databases;
 }
@@ -29,15 +24,9 @@ function fetchAllDatabasesOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      const instances = [],
-        projects = [];
+
       const instancesWithTags = data.DBInstances.map(instance => fetchTagsForDatabaseInstance(regionName, instance));
-      const results = await Promise.all(instancesWithTags);
-      results.map(instance => {
-        instances.push(instance);
-        projects.push(instance.project);
-      });
-      const response = { projects: projects, instances: instances };
+      const response = await Promise.all(instancesWithTags);
 
       resolve(response);
     });
@@ -61,6 +50,7 @@ function fetchTagsForDatabaseInstance(regionName, instance) {
       }
       instance.Tags = data.TagList;
       instance.type = 'rds';
+      instance.project = 'NoProject';
       instance.services = instance.Engine;
       instance.Tags.map(tag => {
         const value = tag.Value;

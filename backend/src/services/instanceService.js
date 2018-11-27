@@ -8,21 +8,14 @@ import * as bucketService from '../services/bucketService';
  * @return {Array}
  */
 export async function fetchAllInstances() {
-  let instances = {
-    projects: [],
-    instances: []
-  };
+  const instances = [];
   const [servers, databases, buckets] = await Promise.all([
     serverService.fetchAllServers(),
     databaseService.fetchAllDatabases(),
     bucketService.fetchAllBuckets()
   ]);
-  instances.projects.push(...servers.projects);
-  instances.instances.push(...servers.instances);
-  instances.projects.push(...databases.projects);
-  instances.instances.push(...databases.instances);
-  instances.projects.push(...buckets.projects);
-  instances.instances.push(...buckets.instances);
+
+  instances.push(...servers, ...databases, ...buckets);
 
   return instances;
 }

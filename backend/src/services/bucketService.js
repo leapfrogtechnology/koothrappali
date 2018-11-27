@@ -1,19 +1,14 @@
 import * as aws from '../aws';
 
+import { flatMap } from 'lodash';
+
 /**
  * Async function to Fetch all buckets from all regions.
  */
 export async function fetchAllBuckets() {
-  let buckets = {
-    projects: [],
-    instances: []
-  };
   const promises = Object.keys(aws.default.s3).map(key => fetchAllBucketsOfRegion(key));
   const results = await Promise.all(promises);
-  results.map(data => {
-    buckets.projects.push(...data.projects);
-    buckets.instances.push(...data.buckets);
-  });
+  const buckets = flatMap(results, result => result);
 
   return buckets;
 }
@@ -29,15 +24,9 @@ function fetchAllBucketsOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      const buckets = [],
-        projects = [];
+
       const bucketsWithTags = data.Buckets.map(bucket => fetchTagsForBucket(regionName, bucket));
-      const results = await Promise.all(bucketsWithTags);
-      results.map(bucket => {
-        buckets.push(bucket);
-        projects.push(bucket.project);
-      });
-      const response = { projects: projects, buckets: buckets };
+      const response = await Promise.all(bucketsWithTags);
 
       resolve(response);
     });
@@ -60,9 +49,11 @@ function fetchTagsForBucket(regionName, bucket) {
         reject(tagErr);
       }
       bucket.type = 's3';
+      bucket.project = 'NoProject';
       bucket.Tags = tagData ? tagData.TagSet : [];
       bucket.Tags.map(tag => {
         const value = tag.Value;
+
         switch (tag.Key) {
           case 'Project':
             bucket.project = value;
