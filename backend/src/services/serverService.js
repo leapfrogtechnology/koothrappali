@@ -1,27 +1,26 @@
 import * as aws from '../aws';
 
 /**
- * Async function to get all servers from all regions
+ * Async function to get all servers from all regions.
  */
 export async function fetchAllServers() {
   let servers = {
     projects: [],
     instances: []
   };
-  await Promise.all(
-    Object.keys(aws.default.ec2).map(async key => {
-      await fetchAllServersOfRegion(key).then(data => {
-        servers.projects.push(...data.projects);
-        servers.instances.push(...data.instances);
-      });
-    })
-  );
+  const promises = Object.keys(aws.default.ec2).map(key => fetchAllServersOfRegion(key));
+  const results = await Promise.all(promises);
+  results.map(data => {
+    servers.projects.push(...data.projects);
+    servers.instances.push(...data.instances);
+  });
 
   return servers;
 }
 
 /**
- * Get servers from particular region name
+ * Get servers from particular region name.
+ *
  * @param {String} regionName
  */
 export function fetchAllServersOfRegion(regionName) {
@@ -30,27 +29,30 @@ export function fetchAllServersOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      let instances = [];
-      let projects = [];
+      const instances = [],
+        projects = [];
       data.Reservations.map(reservation => {
         reservation.Instances.map(instance => {
+          instance.type = 'ec2';
           instance.Tags.map(tag => {
-            if (tag.Key === 'Project') {
-              instance.project = tag.Value;
-              projects.push(tag.Value);
-            }
-            instance.type = 'ec2';
-            if (tag.Key === 'Deployment') {
-              instance.environment = tag.Value;
-            }
-            if (tag.Key === 'OS Platform') {
-              instance.os = tag.Value;
-            }
-            if (tag.Key === 'Name') {
-              instance.name = tag.Value;
-            }
-            if (tag.Key === 'Services') {
-              instance.services = tag.Value;
+            const value = tag.Value;
+            switch (tag.Key) {
+              case 'Project':
+                instance.project = value;
+                projects.push(tag.Value);
+                break;
+              case 'Deployment':
+                instance.environment = tag.Value;
+                break;
+              case 'OS Platform':
+                instance.os = tag.Value;
+                break;
+              case 'Name':
+                instance.name = tag.Value;
+                break;
+              case 'Services':
+                instance.services = tag.Value;
+                break;
             }
           });
           instances.push(instance);
@@ -58,7 +60,7 @@ export function fetchAllServersOfRegion(regionName) {
       });
       const response = { projects: projects, instances: instances };
 
-      return resolve(response);
+      resolve(response);
     });
   });
 }

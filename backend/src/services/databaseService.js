@@ -1,27 +1,26 @@
 import * as aws from '../aws';
 
 /**
- * Async function to get all databases from all regions
+ * Async function to get all databases from all regions.
  */
 export async function fetchAllDatabases() {
   let databases = {
     projects: [],
     instances: []
   };
-  await Promise.all(
-    Object.keys(aws.default.rds).map(async key => {
-      await fetchAllDatabasesOfRegion(key).then(data => {
-        databases.projects.push(...data.projects);
-        databases.instances.push(...data.instances);
-      });
-    })
-  );
+  const promises = Object.keys(aws.default.rds).map(key => fetchAllDatabasesOfRegion(key));
+  const results = await Promise.all(promises);
+  results.map(data => {
+    databases.projects.push(...data.projects);
+    databases.instances.push(...data.instances);
+  });
 
   return databases;
 }
 
 /**
- * Get databases from particular region name
+ * Get databases from particular region name.
+ *
  * @param {String} regionName
  */
 function fetchAllDatabasesOfRegion(regionName) {
@@ -30,26 +29,24 @@ function fetchAllDatabasesOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      let instances = [];
-      let projects = [];
-      await Promise.all(
-        data.DBInstances.map(async instance => {
-          await fetchTagsForDatabaseInstance(regionName, instance).then(instanceData => {
-            instances.push(instanceData);
-            projects.push(instance.project);
-          });
-        })
-      );
-
+      const instances = [],
+        projects = [];
+      const instancesWithTags = data.DBInstances.map(instance => fetchTagsForDatabaseInstance(regionName, instance));
+      const results = await Promise.all(instancesWithTags);
+      results.map(instance => {
+        instances.push(instance);
+        projects.push(instance.project);
+      });
       const response = { projects: projects, instances: instances };
 
-      return resolve(response);
+      resolve(response);
     });
   });
 }
 
 /**
- * This function fetches tags for the database instance
+ * This function fetches tags for the database instance.
+ *
  * @param {String} regionName
  * @param {Object} instance
  */
@@ -58,31 +55,31 @@ function fetchTagsForDatabaseInstance(regionName, instance) {
     let params = {
       ResourceName: instance.DBInstanceArn
     };
-    aws.default.rds[regionName].listTagsForResource(params, (tagErr, tagData) => {
-      if (tagErr) {
-        reject(tagErr);
+    aws.default.rds[regionName].listTagsForResource(params, (err, data) => {
+      if (err) {
+        reject(err);
       }
-      instance.Tags = tagData.TagList;
+      instance.Tags = data.TagList;
+      instance.type = 'rds';
+      instance.services = instance.Engine;
       instance.Tags.map(tag => {
-        if (tag.Key === 'Project') {
-          instance.project = tag.Value;
-        }
-        instance.type = 'rds';
-        if (tag.Key === 'Deployment') {
-          instance.environment = tag.Value;
-        }
-        if (tag.Key === 'OS Platform') {
-          instance.os = tag.Value;
-        }
-        if (tag.Key === 'Name') {
-          instance.name = tag.Value;
-        }
-        if (tag.Key === 'Services') {
-          instance.services = tag.Value;
-        } else {
-          instance.services = instance.Engine;
+        const value = tag.Value;
+        switch (tag.Key) {
+          case 'Project':
+            instance.project = value;
+            break;
+          case 'Deployment':
+            instance.environment = value;
+            break;
+          case 'OS Platform':
+            instance.os = value;
+            break;
+          case 'Name':
+            instance.name = value;
+            break;
         }
       });
+
       resolve(instance);
     });
   });

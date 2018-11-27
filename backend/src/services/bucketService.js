@@ -1,27 +1,26 @@
 import * as aws from '../aws';
 
 /**
- * Async function to Fetch all buckets from all regions
+ * Async function to Fetch all buckets from all regions.
  */
 export async function fetchAllBuckets() {
   let buckets = {
     projects: [],
     instances: []
   };
-  await Promise.all(
-    Object.keys(aws.default.s3).map(async key => {
-      await fetchAllBucketsOfRegion(key).then(data => {
-        buckets.projects.push(...data.projects);
-        buckets.instances.push(...data.buckets);
-      });
-    })
-  );
+  const promises = Object.keys(aws.default.s3).map(key => fetchAllBucketsOfRegion(key));
+  const results = await Promise.all(promises);
+  results.map(data => {
+    buckets.projects.push(...data.projects);
+    buckets.instances.push(...data.buckets);
+  });
 
   return buckets;
 }
 
 /**
- * Fetch buckets from particular region name
+ * Fetch buckets from particular region name.
+ *
  * @param {String} regionName
  */
 function fetchAllBucketsOfRegion(regionName) {
@@ -30,26 +29,24 @@ function fetchAllBucketsOfRegion(regionName) {
       if (err) {
         reject(err);
       }
-      let buckets = [];
-      let projects = [];
-      await Promise.all(
-        data.Buckets.map(async bucket => {
-          await fetchTagsForBucket(regionName, bucket).then(bucketData => {
-            buckets.push(bucketData);
-            projects.push(bucket.project);
-          });
-        })
-      );
-
+      const buckets = [],
+        projects = [];
+      const bucketsWithTags = data.Buckets.map(bucket => fetchTagsForBucket(regionName, bucket));
+      const results = await Promise.all(bucketsWithTags);
+      results.map(bucket => {
+        buckets.push(bucket);
+        projects.push(bucket.project);
+      });
       const response = { projects: projects, buckets: buckets };
 
-      return resolve(response);
+      resolve(response);
     });
   });
 }
 
 /**
- * This function fetches tags for the buckets
+ * This function fetches tags for the buckets.
+ *
  * @param {String} regionName
  * @param {Object} bucket
  */
@@ -62,27 +59,23 @@ function fetchTagsForBucket(regionName, bucket) {
       if (tagErr) {
         reject(tagErr);
       }
+      bucket.type = 's3';
       bucket.Tags = tagData ? tagData.TagSet : [];
       bucket.Tags.map(tag => {
-        if (tag.Key === 'Project') {
-          bucket.project = tag.Value;
-        }
-        bucket.type = 's3';
-        if (tag.Key === 'Deployment') {
-          bucket.environment = tag.Value;
-        }
-        if (tag.Key === 'OS Platform') {
-          bucket.os = tag.Value;
-        }
-        if (tag.Key === 'Name') {
-          bucket.name = tag.Value;
-        }
-        if (tag.Key === 'Services') {
-          bucket.services = tag.Value;
-        } else {
-          bucket.services = bucket.Engine;
+        const value = tag.Value;
+        switch (tag.Key) {
+          case 'Project':
+            bucket.project = value;
+            break;
+          case 'Deployment':
+            bucket.environment = value;
+            break;
+          case 'Name':
+            bucket.name = value;
+            break;
         }
       });
+
       resolve(bucket);
     });
   });

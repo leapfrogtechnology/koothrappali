@@ -11,7 +11,6 @@ import routes from './routes';
 import config from './config';
 import json from './middlewares/json';
 import { logStream } from './utils/logger';
-import response from './middlewares/response';
 import * as errorHandler from './middlewares/errorHandler';
 
 // Initialize Raven
@@ -34,7 +33,6 @@ app.use(morgan('tiny', { stream: logStream }));
 app.use(bodyParser.json());
 app.use(errorHandler.bodyParser);
 app.use(json);
-app.use(response);
 
 // API Routes
 app.use('/api', routes);

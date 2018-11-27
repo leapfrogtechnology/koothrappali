@@ -10,5 +10,5 @@ import * as responseService from '../services/responseService';
  */
 export async function fetchAll(req, res, next) {
   const data = await instanceService.fetchAllInstances();
-  res.success(responseService.groupByProjectAndEnvironment(data.projects, data.instances));
+  res.json({ data: responseService.groupByProjectAndEnvironment(data.projects, data.instances) });
 }
