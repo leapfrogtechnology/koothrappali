@@ -1,4 +1,4 @@
-import * as databaseService from '../services/databaseService';
+import { fetchAllDatabases } from '../services/databaseService';
 import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 /**
@@ -9,7 +9,7 @@ import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
  * @param {Function} next
  */
 export async function fetchAll(req, res, next) {
-  const data = await databaseService.fetchAllDatabases();
+  const data = await fetchAllDatabases();
 
   res.json({ data: groupByProjectAndEnvironment(data) });
 }

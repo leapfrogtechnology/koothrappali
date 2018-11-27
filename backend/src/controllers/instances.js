@@ -1,4 +1,4 @@
-import * as instanceService from '../services/instanceService';
+import { fetchAllInstances } from '../services/instanceService';
 import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 /**
@@ -9,7 +9,7 @@ import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
  * @param {Function} next
  */
 export async function fetchAll(req, res, next) {
-  const data = await instanceService.fetchAllInstances();
+  const data = await fetchAllInstances();
 
   res.json({ data: groupByProjectAndEnvironment(data) });
 }

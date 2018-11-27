@@ -1,6 +1,6 @@
-import * as serverService from '../services/serverService';
-import * as databaseService from '../services/databaseService';
-import * as bucketService from '../services/bucketService';
+import { fetchAllServers } from '../services/serverService';
+import { fetchAllBuckets } from '../services/bucketService';
+import { fetchAllDatabases } from '../services/databaseService';
 
 /**
  * Fetch all Instances.
@@ -9,13 +9,9 @@ import * as bucketService from '../services/bucketService';
  */
 export async function fetchAllInstances() {
   const instances = [];
-  const [servers, databases, buckets] = await Promise.all([
-    serverService.fetchAllServers(),
-    databaseService.fetchAllDatabases(),
-    bucketService.fetchAllBuckets()
-  ]);
+  const [servers, databases, buckets] = await Promise.all([fetchAllServers(), fetchAllBuckets(), fetchAllDatabases()]);
 
-  instances.push(...servers, ...databases, ...buckets);
+  instances.push(...servers, ...buckets, ...databases);
 
   return instances;
 }

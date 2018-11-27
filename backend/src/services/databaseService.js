@@ -1,12 +1,17 @@
-import * as aws from '../aws';
-
 import { flatMap } from 'lodash';
+
+import config from '../config';
+import { assignUsingTags } from '../utils/tags';
+import { fetchAllRDSLocations } from '../utils/aws';
 
 /**
  * Async function to get all databases from all regions.
+ *
+ * @returns {Promise}
  */
 export async function fetchAllDatabases() {
-  const promises = Object.keys(aws.default.rds).map(key => fetchAllDatabasesOfRegion(key));
+  const rdsLocations = await fetchAllRDSLocations();
+  const promises = rdsLocations.map(rdsLocation => fetchAllDatabasesOfRegion(rdsLocation));
   const results = await Promise.all(promises);
   const databases = flatMap(results, result => result);
 
@@ -16,16 +21,18 @@ export async function fetchAllDatabases() {
 /**
  * Get databases from particular region name.
  *
- * @param {String} regionName
+ * @param {Object} rdsLocation
+ *
+ * @returns {Promise}
  */
-function fetchAllDatabasesOfRegion(regionName) {
+function fetchAllDatabasesOfRegion(rdsLocation) {
   return new Promise((resolve, reject) => {
-    aws.default.rds[regionName].describeDBInstances({}, async (err, data) => {
+    rdsLocation.describeDBInstances({}, async (err, data) => {
       if (err) {
         reject(err);
       }
 
-      const instancesWithTags = data.DBInstances.map(instance => fetchTagsForDatabaseInstance(regionName, instance));
+      const instancesWithTags = data.DBInstances.map(instance => fetchTagsForDatabaseInstance(rdsLocation, instance));
       const response = await Promise.all(instancesWithTags);
 
       resolve(response);
@@ -36,41 +43,26 @@ function fetchAllDatabasesOfRegion(regionName) {
 /**
  * This function fetches tags for the database instance.
  *
- * @param {String} regionName
+ * @param {Object} rdsLocation
  * @param {Object} instance
+ *
+ * @returns {Promise}
  */
-function fetchTagsForDatabaseInstance(regionName, instance) {
+function fetchTagsForDatabaseInstance(rdsLocation, instance) {
   return new Promise((resolve, reject) => {
-    let params = {
+    const params = {
       ResourceName: instance.DBInstanceArn
     };
-    aws.default.rds[regionName].listTagsForResource(params, (err, data) => {
+    rdsLocation.listTagsForResource(params, (err, data) => {
       if (err) {
         reject(err);
       }
-      instance.Tags = data.TagList;
-      instance.type = 'rds';
-      instance.project = 'NoProject';
-      instance.services = instance.Engine;
-      instance.Tags.map(tag => {
-        const value = tag.Value;
-        switch (tag.Key) {
-          case 'Project':
-            instance.project = value;
-            break;
-          case 'Deployment':
-            instance.environment = value;
-            break;
-          case 'OS Platform':
-            instance.os = value;
-            break;
-          case 'Name':
-            instance.name = value;
-            break;
-        }
-      });
+      const database = assignUsingTags(data.TagList);
+      database.location = rdsLocation.config.region;
+      database.domain = instance.Endpoint.Address;
+      database.type = config.instanceTypes.rds;
 
-      resolve(instance);
+      resolve(database);
     });
   });
 }

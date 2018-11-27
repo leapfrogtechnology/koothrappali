@@ -1,12 +1,17 @@
-import * as aws from '../aws';
-
 import { flatMap } from 'lodash';
+
+import config from '../config';
+import { assignUsingTags } from '../utils/tags';
+import { fetchAllS3Locations } from '../utils/aws';
 
 /**
  * Async function to Fetch all buckets from all regions.
+ *
+ * @returns {Promise}
  */
 export async function fetchAllBuckets() {
-  const promises = Object.keys(aws.default.s3).map(key => fetchAllBucketsOfRegion(key));
+  const s3Locations = await fetchAllS3Locations();
+  const promises = s3Locations.map(s3Location => fetchAllBucketsOfRegion(s3Location));
   const results = await Promise.all(promises);
   const buckets = flatMap(results, result => result);
 
@@ -16,16 +21,18 @@ export async function fetchAllBuckets() {
 /**
  * Fetch buckets from particular region name.
  *
- * @param {String} regionName
+ * @param {Object} s3Location
+ *
+ * @returns {Promise}
  */
-function fetchAllBucketsOfRegion(regionName) {
+export function fetchAllBucketsOfRegion(s3Location) {
   return new Promise((resolve, reject) => {
-    aws.default.s3[regionName].listBuckets({}, async (err, data) => {
+    s3Location.listBuckets({}, async (err, data) => {
       if (err) {
         reject(err);
       }
 
-      const bucketsWithTags = data.Buckets.map(bucket => fetchTagsForBucket(regionName, bucket));
+      const bucketsWithTags = data.Buckets.map(bucket => fetchTagsForBucket(s3Location, bucket));
       const response = await Promise.all(bucketsWithTags);
 
       resolve(response);
@@ -36,36 +43,23 @@ function fetchAllBucketsOfRegion(regionName) {
 /**
  * This function fetches tags for the buckets.
  *
- * @param {String} regionName
+ * @param {Object} s3
  * @param {Object} bucket
+ *
+ * @returns {Promise}
  */
-function fetchTagsForBucket(regionName, bucket) {
+function fetchTagsForBucket(s3, bucket) {
   return new Promise((resolve, reject) => {
-    let params = {
+    const params = {
       Bucket: bucket.Name
     };
-    aws.default.s3[regionName].getBucketTagging(params, (tagErr, tagData) => {
-      if (tagErr) {
-        reject(tagErr);
+    s3.getBucketTagging(params, (err, data) => {
+      if (err) {
+        reject(err);
       }
-      bucket.type = 's3';
-      bucket.project = 'NoProject';
-      bucket.Tags = tagData ? tagData.TagSet : [];
-      bucket.Tags.map(tag => {
-        const value = tag.Value;
-
-        switch (tag.Key) {
-          case 'Project':
-            bucket.project = value;
-            break;
-          case 'Deployment':
-            bucket.environment = value;
-            break;
-          case 'Name':
-            bucket.name = value;
-            break;
-        }
-      });
+      const bucket = assignUsingTags(data.TagSet);
+      bucket.location = s3.config.region;
+      bucket.type = config.instanceTypes.s3;
 
       resolve(bucket);
     });
