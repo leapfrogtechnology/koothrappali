@@ -1,8 +1,4 @@
-import AWS from 'aws-sdk';
-
 import { version, title, description } from '../package.json';
-
-AWS.config.loadFromPath('./cred.json');
 
 const config = {
   app: {
@@ -23,8 +19,7 @@ const config = {
     filename: '%DATE%-debug.log'
   },
   aws: {
-    version: '2016-11-15',
-    AWS: AWS
+    version: '2016-11-15'
   },
   tags: {
     project: 'Project',

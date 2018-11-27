@@ -1,4 +1,8 @@
+import AWS from 'aws-sdk';
+
 import config from '../config';
+
+AWS.config.loadFromPath('./cred.json');
 
 /**
  * Get all EC2 Locations
@@ -7,13 +11,13 @@ import config from '../config';
  */
 export function fetchAllEC2Locations() {
   return new Promise((resolve, reject) => {
-    const aws = new config.aws.AWS.EC2({ apiVersion: config.aws.version });
+    const aws = new AWS.EC2({ apiVersion: config.aws.version });
     aws.describeRegions({}, function(err, data) {
       if (err) {
         reject(err);
       }
       const response = data.Regions.map(
-        region => new config.aws.AWS.EC2({ apiVersion: config.aws.version, region: region.RegionName })
+        region => new AWS.EC2({ apiVersion: config.aws.version, region: region.RegionName })
       );
 
       resolve(response);
@@ -28,13 +32,13 @@ export function fetchAllEC2Locations() {
  */
 export function fetchAllRDSLocations() {
   return new Promise((resolve, reject) => {
-    const aws = new config.aws.AWS.EC2({ apiVersion: config.aws.version });
+    const aws = new AWS.EC2({ apiVersion: config.aws.version });
     aws.describeRegions({}, function(err, data) {
       if (err) {
         reject(err);
       }
       const response = data.Regions.map(
-        region => new config.aws.AWS.RDS({ apiVersion: config.aws.version, region: region.RegionName })
+        region => new AWS.RDS({ apiVersion: config.aws.version, region: region.RegionName })
       );
 
       resolve(response);
@@ -49,13 +53,13 @@ export function fetchAllRDSLocations() {
  */
 export function fetchAllS3Locations() {
   return new Promise((resolve, reject) => {
-    const aws = new config.aws.AWS.EC2({ apiVersion: config.aws.version });
+    const aws = new AWS.EC2({ apiVersion: config.aws.version });
     aws.describeRegions({}, function(err, data) {
       if (err) {
         reject(err);
       }
       const response = data.Regions.map(
-        region => new config.aws.AWS.S3({ apiVersion: config.aws.version, region: region.RegionName })
+        region => new AWS.S3({ apiVersion: config.aws.version, region: region.RegionName })
       );
 
       resolve(response);
