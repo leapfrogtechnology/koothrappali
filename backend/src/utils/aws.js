@@ -13,12 +13,14 @@ export function fetchAllEC2Locations() {
   return new Promise((resolve, reject) => {
     const aws = getAwsInstance();
 
-    aws.describeRegions({}, function(err, data) {
+    aws.describeRegions({}, (err, data) => {
       if (err) {
         reject(err);
       }
 
-      const response = data.Regions.map(
+      const regions = data.Regions;
+
+      const response = regions.map(
         region => new AWS.EC2({ apiVersion: config.aws.version, region: region.RegionName })
       );
 
@@ -36,12 +38,14 @@ export function fetchAllRDSLocations() {
   return new Promise((resolve, reject) => {
     const aws = getAwsInstance();
 
-    aws.describeRegions({}, function(err, data) {
+    aws.describeRegions({}, (err, data) => {
       if (err) {
         reject(err);
       }
 
-      const response = data.Regions.map(
+      const regions = data.Regions;
+
+      const response = regions.map(
         region => new AWS.RDS({ apiVersion: config.aws.version, region: region.RegionName })
       );
 
@@ -59,14 +63,14 @@ export function fetchAllS3Locations() {
   return new Promise((resolve, reject) => {
     const aws = getAwsInstance();
 
-    aws.describeRegions({}, function(err, data) {
+    aws.describeRegions({}, (err, data) => {
       if (err) {
         reject(err);
       }
 
-      const response = data.Regions.map(
-        region => new AWS.S3({ apiVersion: config.aws.version, region: region.RegionName })
-      );
+      const regions = data.Regions;
+
+      const response = regions.map(region => new AWS.S3({ apiVersion: config.aws.version, region: region.RegionName }));
 
       resolve(response);
     });
