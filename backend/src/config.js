@@ -20,18 +20,6 @@ const config = {
   },
   aws: {
     version: '2016-11-15'
-  },
-  tags: {
-    project: 'Project',
-    deployment: 'Deployment',
-    os: 'OS Platform',
-    name: 'Name',
-    services: 'Services'
-  },
-  instanceTypes: {
-    ec2: 'ec2',
-    s3: 's3',
-    rds: 'rds'
   }
 };
 

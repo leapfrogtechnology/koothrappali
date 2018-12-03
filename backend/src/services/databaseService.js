@@ -1,8 +1,9 @@
 import { flatMap } from 'lodash';
 
-import config from '../config';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllRDSLocations } from '../utils/aws';
+
+const instanceType = 'rds';
 
 /**
  * Async function to get all databases from all regions.
@@ -57,10 +58,12 @@ function fetchTagsForDatabaseInstance(rdsLocation, instance) {
       if (err) {
         reject(err);
       }
+
       const database = assignUsingTags(data.TagList);
+
       database.location = rdsLocation.config.region;
       database.domain = instance.Endpoint.Address;
-      database.type = config.instanceTypes.rds;
+      database.type = instanceType;
 
       resolve(database);
     });

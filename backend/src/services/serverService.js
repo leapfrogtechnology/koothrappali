@@ -1,8 +1,9 @@
 import { flatMap } from 'lodash';
 
-import config from '../config';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllEC2Locations } from '../utils/aws';
+
+const instanceType = 'ec2';
 
 /**
  * Async function to get all servers from all regions.
@@ -30,12 +31,14 @@ export function fetchAllServersOfRegion(ec2Location) {
       if (err) {
         reject(err);
       }
+
       const instances = data.Reservations.map(reservation => {
         return reservation.Instances.map(instance => {
           const server = assignUsingTags(instance.Tags);
+
           server.location = ec2Location.config.region;
           server.domain = instance.PublicDnsName;
-          server.type = config.instanceTypes.ec2;
+          server.type = instanceType;
           server.ip = instance.PublicIpAddress;
           server.state = instance.State ? instance.State.Name : '-';
 

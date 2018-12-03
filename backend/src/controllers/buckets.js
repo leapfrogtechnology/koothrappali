@@ -7,8 +7,6 @@ import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
- *
- * @returns {JSON}
  */
 export async function fetchAll(req, res, next) {
   const data = await fetchAllBuckets();
