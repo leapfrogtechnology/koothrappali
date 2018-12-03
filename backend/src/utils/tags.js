@@ -1,5 +1,10 @@
-import config from '../config';
 import { formatServices } from '../utils/services';
+
+const project = 'Project';
+const deployment = 'Deployment';
+const os = 'OS Platform';
+const name = 'Name';
+const services = 'Services';
 
 /**
  * Assigns variables using tags.
@@ -13,19 +18,23 @@ export function assignUsingTags(tags) {
     const value = tag.Value;
 
     switch (tag.Key) {
-      case config.tags.project:
+      case project:
         instance.project = value;
         break;
-      case config.tags.deployment:
+
+      case deployment:
         instance.environment = tag.Value;
         break;
-      case config.tags.os:
+
+      case os:
         instance.os = tag.Value;
         break;
-      case config.tags.name:
+
+      case name:
         instance.name = tag.Value;
         break;
-      case config.tags.services:
+
+      case services:
         instance.services = formatServices(tag.Value);
         break;
     }

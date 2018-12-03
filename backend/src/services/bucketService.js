@@ -1,8 +1,9 @@
 import { flatMap } from 'lodash';
 
-import config from '../config';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllS3Locations } from '../utils/aws';
+
+const instanceType = 's3';
 
 /**
  * Async function to Fetch all buckets from all regions.
@@ -57,9 +58,11 @@ function fetchTagsForBucket(s3, bucket) {
       if (err) {
         reject(err);
       }
+
       const bucket = assignUsingTags(data.TagSet);
+
       bucket.location = s3.config.region;
-      bucket.type = config.instanceTypes.s3;
+      bucket.type = instanceType;
 
       resolve(bucket);
     });
