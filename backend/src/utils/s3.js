@@ -6,18 +6,11 @@ import { getS3InstanceFor } from './aws';
  * @param {String} region
  * @returns {Promise}
  */
-export function fetchAll(region) {
-  return new Promise((resolve, reject) => {
-    const s3 = getS3InstanceFor(region);
+export async function fetchAll(region) {
+  const s3 = getS3InstanceFor(region);
+  const data = await s3.listBuckets().promise();
 
-    s3.listBuckets({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      resolve(data.Buckets);
-    });
-  });
+  return data.Buckets;
 }
 
 /**
@@ -27,21 +20,13 @@ export function fetchAll(region) {
  * @param {Object} instance
  * @returns {Promise}
  */
-export function fetchTags(region, instance) {
-  return new Promise((resolve, reject) => {
-    const s3 = getS3InstanceFor(region);
-    const params = {
-      Bucket: instance.Name
-    };
+export async function fetchTags(region, instance) {
+  const s3 = getS3InstanceFor(region);
+  const params = {
+    Bucket: instance.Name
+  };
+  const data = await s3.getBucketTagging(params).promise();
+  const tags = data.TagSet ? data.TagSet : [];
 
-    s3.getBucketTagging(params, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const tags = data.TagSet ? data.TagSet : [];
-
-      resolve(tags);
-    });
-  });
+  return tags;
 }

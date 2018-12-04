@@ -1,10 +1,10 @@
 import { formatServices } from '../utils/services';
 
-const project = 'Project';
-const deployment = 'Deployment';
-const os = 'OS Platform';
-const name = 'Name';
-const services = 'Services';
+const TAG_PROJECT = 'Project';
+const TAG_DEPLOYMENT = 'Deployment';
+const TAG_OS = 'OS Platform';
+const TAG_NAME = 'Name';
+const TAG_SERVICES = 'Services';
 
 /**
  * Assigns variables using tags.
@@ -15,26 +15,24 @@ const services = 'Services';
 export function assignUsingTags(tags) {
   const instance = {};
   tags.forEach(tag => {
-    const value = tag.Value;
-
     switch (tag.Key) {
-      case project:
-        instance.project = value;
+      case TAG_PROJECT:
+        instance.project = tag.Value;
         break;
 
-      case deployment:
+      case TAG_DEPLOYMENT:
         instance.environment = tag.Value;
         break;
 
-      case os:
+      case TAG_OS:
         instance.os = tag.Value;
         break;
 
-      case name:
+      case TAG_NAME:
         instance.name = tag.Value;
         break;
 
-      case services:
+      case TAG_SERVICES:
         instance.services = formatServices(tag.Value);
         break;
     }

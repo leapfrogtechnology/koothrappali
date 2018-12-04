@@ -31,15 +31,14 @@ async function fetchAllServersOfRegion(region) {
   const ec2 = await fetchAll(region);
   const instances = ec2.map(reservation => {
     return reservation.Instances.map(instance => {
-      const server = assignUsingTags(instance.Tags);
-
-      server.location = region;
-      server.domain = instance.PublicDnsName;
-      server.type = INSTANCE_TYPE;
-      server.ip = instance.PublicIpAddress;
-      server.state = instance.State ? instance.State.Name : '-';
-
-      return server;
+      return {
+        ...assignUsingTags(instance.Tags),
+        location: region,
+        domain: instance.PublicDnsName,
+        ip: instance.PublicIpAddress,
+        state: instance.State ? instance.State.Name : '-',
+        type: INSTANCE_TYPE
+      };
     });
   });
 

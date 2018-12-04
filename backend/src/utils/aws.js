@@ -48,41 +48,11 @@ export function getS3InstanceFor(region) {
  *
  * @returns {Promise}
  */
-export function fetchAllAWSLocation() {
-  return new Promise((resolve, reject) => {
-    const aws = getAwsInstance();
+export async function fetchAllAWSLocation() {
+  const aws = getAwsInstance();
+  const data = await aws.describeRegions().promise();
+  const regions = data.Regions;
+  const response = regions.map(region => region.RegionName);
 
-    aws.describeRegions({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      const regions = data.Regions;
-      const response = regions.map(region => region.RegionName);
-
-      resolve(response);
-    });
-  });
-}
-
-/**
- * Get all S3 Locations
- *
- * @returns {Promise}
- */
-export function fetchAllS3Locations() {
-  return new Promise((resolve, reject) => {
-    const aws = getAwsInstance();
-
-    aws.describeRegions({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const regions = data.Regions;
-
-      const response = regions.map(region => new AWS.S3({ apiVersion: config.aws.version, region: region.RegionName }));
-
-      resolve(response);
-    });
-  });
+  return response;
 }

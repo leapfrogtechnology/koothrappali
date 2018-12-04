@@ -44,11 +44,11 @@ async function fetchAllDatabasesOfRegion(region) {
  */
 async function fetchTagsForDatabaseInstance(region, instance) {
   const tags = await fetchTags(region, instance);
-  const database = assignUsingTags(tags);
 
-  database.location = region;
-  database.domain = instance.Endpoint.Address;
-  database.type = INSTANCE_TYPE;
-
-  return database;
+  return {
+    ...assignUsingTags(tags),
+    location: region,
+    domain: instance.Endpoint.Address,
+    type: INSTANCE_TYPE
+  };
 }

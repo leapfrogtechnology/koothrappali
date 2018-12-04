@@ -6,18 +6,11 @@ import { getRDSInstanceFor } from './aws';
  * @param {String} region
  * @returns {Promise}
  */
-export function fetchAll(region) {
-  return new Promise((resolve, reject) => {
-    const rds = getRDSInstanceFor(region);
+export async function fetchAll(region) {
+  const rds = getRDSInstanceFor(region);
+  const data = await rds.describeDBInstances().promise();
 
-    rds.describeDBInstances({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      resolve(data.DBInstances);
-    });
-  });
+  return data.DBInstances;
 }
 
 /**
@@ -27,21 +20,13 @@ export function fetchAll(region) {
  * @param {Object} instance
  * @returns {Promise}
  */
-export function fetchTags(region, instance) {
-  return new Promise((resolve, reject) => {
-    const rds = getRDSInstanceFor(region);
-    const params = {
-      ResourceName: instance.DBInstanceArn
-    };
+export async function fetchTags(region, instance) {
+  const rds = getRDSInstanceFor(region);
+  const params = {
+    ResourceName: instance.DBInstanceArn
+  };
+  const data = await rds.listTagsForResource(params).promise();
+  const tags = data.TagList ? data.TagList : [];
 
-    rds.listTagsForResource(params, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const tags = data.TagList ? data.TagList : [];
-
-      resolve(tags);
-    });
-  });
+  return tags;
 }

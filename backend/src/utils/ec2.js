@@ -6,18 +6,10 @@ import { getEC2InstanceFor } from './aws';
  * @param {String} region
  * @returns {Promise}
  */
-export function fetchAll(region) {
-  return new Promise((resolve, reject) => {
-    const ec2 = getEC2InstanceFor(region);
+export async function fetchAll(region) {
+  const ec2 = getEC2InstanceFor(region);
+  const data = await ec2.describeInstances().promise();
+  const instances = data.Reservations;
 
-    ec2.describeInstances({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const instances = data.Reservations;
-
-      resolve(instances);
-    });
-  });
+  return instances;
 }

@@ -45,15 +45,16 @@ export async function fetchAllBucketsOfRegion(region) {
  */
 async function fetchTagsFor(region, bucket) {
   let tags = [];
+
   try {
     tags = await fetchTags(region, bucket);
   } catch (error) {
-    logger.error(`${bucket.Name} has no tags`);
+    logger.error(`Could not fetch tags for ${bucket.Name}`, error);
   }
-  const instance = assignUsingTags(tags);
 
-  instance.location = region;
-  instance.type = INSTANCE_TYPE;
-
-  return instance;
+  return {
+    ...assignUsingTags(tags),
+    location: region,
+    type: INSTANCE_TYPE
+  };
 }
