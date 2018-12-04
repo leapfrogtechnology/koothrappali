@@ -2,7 +2,7 @@ import { fetchAllInstances } from '../services/instanceService';
 import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 /**
- * Get all Instances.
+ * Get all instances.
  *
  * @param {Object} req
  * @param {Object} res
