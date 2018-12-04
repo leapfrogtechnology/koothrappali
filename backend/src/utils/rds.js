@@ -1,7 +1,7 @@
 import { getRDSInstanceFor } from './aws';
 
 /**
- * Fetch all RDS.
+ * Fetch all RDS from region.
  *
  * @param {String} region
  * @returns {Promise}
@@ -39,7 +39,9 @@ export function fetchTags(region, instance) {
         reject(err);
       }
 
-      resolve(data.TagList);
+      const tags = data.TagList ? data.TagList : [];
+
+      resolve(tags);
     });
   });
 }

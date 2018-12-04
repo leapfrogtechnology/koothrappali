@@ -1,9 +1,10 @@
 import { flatMap } from 'lodash';
 
 import { assignUsingTags } from '../utils/tags';
-import { fetchAllS3Locations } from '../utils/aws';
+import { fetchAllAWSLocation } from '../utils/aws';
+import { fetchAll, fetchTags } from '../utils/s3';
 
-const instanceType = 's3';
+const INSTANCE_TYPE = 's3';
 
 /**
  * Async function to Fetch all buckets from all regions.
@@ -11,8 +12,8 @@ const instanceType = 's3';
  * @returns {Promise}
  */
 export async function fetchAllBuckets() {
-  const s3Locations = await fetchAllS3Locations();
-  const promises = s3Locations.map(s3Location => fetchAllBucketsOfRegion(s3Location));
+  const regions = await fetchAllAWSLocation();
+  const promises = regions.map(region => fetchAllBucketsOfRegion(region));
   const results = await Promise.all(promises);
   const buckets = flatMap(results, result => result);
 
@@ -22,49 +23,30 @@ export async function fetchAllBuckets() {
 /**
  * Fetch buckets from particular region name.
  *
- * @param {Object} s3Location
- *
+ * @param {String} region
  * @returns {Promise}
  */
-export function fetchAllBucketsOfRegion(s3Location) {
-  return new Promise((resolve, reject) => {
-    s3Location.listBuckets({}, async (err, data) => {
-      if (err) {
-        reject(err);
-      }
+export async function fetchAllBucketsOfRegion(region) {
+  const s3 = await fetchAll(region);
+  const s3WithTags = s3.map(bucket => fetchTagsFor(region, bucket));
+  const response = await Promise.all(s3WithTags);
 
-      const bucketsWithTags = data.Buckets.map(bucket => fetchTagsForBucket(s3Location, bucket));
-      const response = await Promise.all(bucketsWithTags);
-
-      resolve(response);
-    });
-  });
+  return response;
 }
 
 /**
- * This function fetches tags for the buckets.
+ * This function fetches tags for the S3.
  *
- * @param {Object} s3
+ * @param {String} region
  * @param {Object} bucket
- *
  * @returns {Promise}
  */
-function fetchTagsForBucket(s3, bucket) {
-  return new Promise((resolve, reject) => {
-    const params = {
-      Bucket: bucket.Name
-    };
-    s3.getBucketTagging(params, (err, data) => {
-      if (err) {
-        reject(err);
-      }
+async function fetchTagsFor(region, bucket) {
+  const tags = await fetchTags(region, bucket);
+  const instance = assignUsingTags(tags);
 
-      const bucket = assignUsingTags(data.TagSet);
+  instance.location = region;
+  instance.type = INSTANCE_TYPE;
 
-      bucket.location = s3.config.region;
-      bucket.type = instanceType;
-
-      resolve(bucket);
-    });
-  });
+  return instance;
 }
