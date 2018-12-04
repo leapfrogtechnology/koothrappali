@@ -6,7 +6,7 @@ import config from '../config';
 AWS.config.loadFromPath(resolve('./cred.json'));
 
 /**
- * Get an AWS Instances.
+ * Get an AWS instance.
  *
  * @returns {Promise<Object>}
  */
