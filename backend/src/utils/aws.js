@@ -15,7 +15,7 @@ function getAWSInstance() {
 }
 
 /**
- * Get new ec2 instance.
+ * Get new EC2 instance.
  *
  * @param {String} region
  * @returns {Promise<Object>}
@@ -45,7 +45,7 @@ export function getS3InstanceFor(region) {
 }
 
 /**
- * Fetch All AWS Locations.
+ * Fetch all AWS locations.
  *
  * @returns {Promise<Array>}
  */
