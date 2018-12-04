@@ -65,56 +65,6 @@ export function fetchAllAWSLocation() {
 }
 
 /**
- * Get all EC2 Locations
- *
- * @returns {Promise}
- */
-export function fetchAllEC2Locations() {
-  return new Promise((resolve, reject) => {
-    const aws = getAwsInstance();
-
-    aws.describeRegions({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const regions = data.Regions;
-
-      const response = regions.map(
-        region => new AWS.EC2({ apiVersion: config.aws.version, region: region.RegionName })
-      );
-
-      resolve(response);
-    });
-  });
-}
-
-/**
- * Get all RDS Locations
- *
- * @returns {Promise}
- */
-export function fetchAllRDSLocations() {
-  return new Promise((resolve, reject) => {
-    const aws = getAwsInstance();
-
-    aws.describeRegions({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-
-      const regions = data.Regions;
-
-      const response = regions.map(
-        region => new AWS.RDS({ apiVersion: config.aws.version, region: region.RegionName })
-      );
-
-      resolve(response);
-    });
-  });
-}
-
-/**
  * Get all S3 Locations
  *
  * @returns {Promise}

@@ -1,9 +1,11 @@
 import { flatMap } from 'lodash';
 
+import { fetchAll } from '../utils/ec2';
 import { assignUsingTags } from '../utils/tags';
-import { fetchAllEC2Locations } from '../utils/aws';
+import { fetchAllAWSLocation } from '../utils/aws';
+import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
-const instanceType = 'ec2';
+const INSTANCE_TYPE = 'ec2';
 
 /**
  * Async function to get all servers from all regions.
@@ -11,44 +13,37 @@ const instanceType = 'ec2';
  * @returns {Promise}
  */
 export async function fetchAllServers() {
-  const ec2Locations = await fetchAllEC2Locations();
-  const promises = ec2Locations.map(ec2Location => fetchAllServersOfRegion(ec2Location));
+  const regions = await fetchAllAWSLocation();
+  const promises = regions.map(region => fetchAllServersOfRegion(region));
   const results = await Promise.all(promises);
   const servers = flatMap(results, result => result);
 
-  return servers;
+  return groupByProjectAndEnvironment(servers);
 }
 
 /**
  * Get servers from particular region name.
  *
- * @param {Object} ec2Location
+ * @param {Object} region
  * @returns {Promise}
  */
-export function fetchAllServersOfRegion(ec2Location) {
-  return new Promise((resolve, reject) => {
-    ec2Location.describeInstances({}, (err, data) => {
-      if (err) {
-        reject(err);
-      }
+async function fetchAllServersOfRegion(region) {
+  const ec2 = await fetchAll(region);
+  const instances = ec2.map(reservation => {
+    return reservation.Instances.map(instance => {
+      const server = assignUsingTags(instance.Tags);
 
-      const instances = data.Reservations.map(reservation => {
-        return reservation.Instances.map(instance => {
-          const server = assignUsingTags(instance.Tags);
+      server.location = region;
+      server.domain = instance.PublicDnsName;
+      server.type = INSTANCE_TYPE;
+      server.ip = instance.PublicIpAddress;
+      server.state = instance.State ? instance.State.Name : '-';
 
-          server.location = ec2Location.config.region;
-          server.domain = instance.PublicDnsName;
-          server.type = instanceType;
-          server.ip = instance.PublicIpAddress;
-          server.state = instance.State ? instance.State.Name : '-';
-
-          return server;
-        });
-      });
-
-      const response = flatMap(instances, result => result);
-
-      resolve(response);
+      return server;
     });
   });
+
+  const response = flatMap(instances, result => result);
+
+  return response;
 }
