@@ -3,7 +3,6 @@ import { flatMap } from 'lodash';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllAWSLocation } from '../utils/aws';
 import { fetchAll, fetchTags } from '../utils/rds';
-import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 const INSTANCE_TYPE = 'rds';
 
@@ -18,7 +17,7 @@ export async function fetchAllDatabases() {
   const results = await Promise.all(promises);
   const databases = flatMap(results, result => result);
 
-  return groupByProjectAndEnvironment(databases);
+  return databases;
 }
 
 /**

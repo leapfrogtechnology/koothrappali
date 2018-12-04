@@ -3,7 +3,6 @@ import { flatMap } from 'lodash';
 import { fetchAll } from '../utils/ec2';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllAWSLocation } from '../utils/aws';
-import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 const INSTANCE_TYPE = 'ec2';
 
@@ -18,7 +17,7 @@ export async function fetchAllServers() {
   const results = await Promise.all(promises);
   const servers = flatMap(results, result => result);
 
-  return groupByProjectAndEnvironment(servers);
+  return servers;
 }
 
 /**

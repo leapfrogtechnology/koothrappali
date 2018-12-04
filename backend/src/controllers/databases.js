@@ -1,4 +1,5 @@
 import { fetchAllDatabases } from '../services/databaseService';
+import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 /**
  * Get all databases.
@@ -10,5 +11,5 @@ import { fetchAllDatabases } from '../services/databaseService';
 export async function fetchAll(req, res, next) {
   const data = await fetchAllDatabases();
 
-  res.json({ data });
+  res.json({ data: groupByProjectAndEnvironment(data) });
 }

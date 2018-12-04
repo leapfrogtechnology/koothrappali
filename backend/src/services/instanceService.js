@@ -1,7 +1,7 @@
 import { fetchAllServers } from '../services/serverService';
 import { fetchAllBuckets } from '../services/bucketService';
 import { fetchAllDatabases } from '../services/databaseService';
-import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
+
 /**
  * Fetch all Instances.
  *
@@ -13,5 +13,5 @@ export async function fetchAllInstances() {
 
   instances.push(...servers, ...buckets, ...databases);
 
-  return groupByProjectAndEnvironment(instances);
+  return instances;
 }
