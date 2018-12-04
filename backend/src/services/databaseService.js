@@ -1,9 +1,11 @@
 import { flatMap } from 'lodash';
 
 import { assignUsingTags } from '../utils/tags';
-import { fetchAllRDSLocations } from '../utils/aws';
+import { fetchAllAWSLocation } from '../utils/aws';
+import { fetchAll, fetchTags } from '../utils/rds';
+import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
-const instanceType = 'rds';
+const INSTANCE_TYPE = 'rds';
 
 /**
  * Async function to get all databases from all regions.
@@ -11,61 +13,42 @@ const instanceType = 'rds';
  * @returns {Promise}
  */
 export async function fetchAllDatabases() {
-  const rdsLocations = await fetchAllRDSLocations();
-  const promises = rdsLocations.map(rdsLocation => fetchAllDatabasesOfRegion(rdsLocation));
+  const regions = await fetchAllAWSLocation();
+  const promises = regions.map(region => fetchAllDatabasesOfRegion(region));
   const results = await Promise.all(promises);
   const databases = flatMap(results, result => result);
 
-  return databases;
+  return groupByProjectAndEnvironment(databases);
 }
 
 /**
  * Get databases from particular region name.
  *
- * @param {Object} rdsLocation
- *
- * @returns {Promise}
+ * @param {String} region
+ * @returns {Array<Promise>}
  */
-function fetchAllDatabasesOfRegion(rdsLocation) {
-  return new Promise((resolve, reject) => {
-    rdsLocation.describeDBInstances({}, async (err, data) => {
-      if (err) {
-        reject(err);
-      }
+async function fetchAllDatabasesOfRegion(region) {
+  const rds = await fetchAll(region);
+  const instancesWithTags = rds.map(instance => fetchTagsForDatabaseInstance(region, instance));
+  const response = await Promise.all(instancesWithTags);
 
-      const instancesWithTags = data.DBInstances.map(instance => fetchTagsForDatabaseInstance(rdsLocation, instance));
-      const response = await Promise.all(instancesWithTags);
-
-      resolve(response);
-    });
-  });
+  return response;
 }
 
 /**
  * This function fetches tags for the database instance.
  *
- * @param {Object} rdsLocation
+ * @param {String} region
  * @param {Object} instance
- *
- * @returns {Promise}
+ * @returns {Object}
  */
-function fetchTagsForDatabaseInstance(rdsLocation, instance) {
-  return new Promise((resolve, reject) => {
-    const params = {
-      ResourceName: instance.DBInstanceArn
-    };
-    rdsLocation.listTagsForResource(params, (err, data) => {
-      if (err) {
-        reject(err);
-      }
+async function fetchTagsForDatabaseInstance(region, instance) {
+  const tags = await fetchTags(region, instance);
+  const database = assignUsingTags(tags);
 
-      const database = assignUsingTags(data.TagList);
+  database.location = region;
+  database.domain = instance.Endpoint.Address;
+  database.type = INSTANCE_TYPE;
 
-      database.location = rdsLocation.config.region;
-      database.domain = instance.Endpoint.Address;
-      database.type = instanceType;
-
-      resolve(database);
-    });
-  });
+  return database;
 }
