@@ -1,7 +1,7 @@
 import { getS3InstanceFor } from './aws';
 
 /**
- * Fetch all S3 from region.
+ * Fetch all S3 buckets from region.
  *
  * @param {String} region
  * @returns {Promise}
@@ -14,7 +14,7 @@ export async function fetchAll(region) {
 }
 
 /**
- * Fetch all tags of s3 bucket.
+ * Fetch all tags of S3 bucket.
  *
  * @param {String} region
  * @param {Object} instance
