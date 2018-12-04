@@ -1,4 +1,4 @@
-import { formatServices } from '../utils/services';
+import { formatServices } from './string';
 
 const TAG_NAME = 'Name';
 const TAG_OS = 'OS Platform';

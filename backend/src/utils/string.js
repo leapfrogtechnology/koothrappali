@@ -1,5 +1,5 @@
 /**
- * formatSevices splits the services with the criteria.
+ * Splits the services with the criteria.
  *
  * @param {String} services
  * @returns {Array}
