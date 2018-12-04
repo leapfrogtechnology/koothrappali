@@ -9,7 +9,7 @@ const INSTANCE_TYPE = 'rds';
 /**
  * Get all databases from all regions.
  *
- * @returns {Promise}
+ * @returns {Promise<Array>}
  */
 export async function fetchAllDatabases() {
   const regions = await fetchAllAWSLocation();
@@ -24,7 +24,7 @@ export async function fetchAllDatabases() {
  * Get databases from particular region name.
  *
  * @param {String} region
- * @returns {Array<Promise>}
+ * @returns {Promise<Array>}
  */
 async function fetchAllDatabasesOfRegion(region) {
   const rds = await fetchAll(region);
@@ -39,7 +39,7 @@ async function fetchAllDatabasesOfRegion(region) {
  *
  * @param {String} region
  * @param {Object} instance
- * @returns {Object}
+ * @returns {Promise<Object>}
  */
 async function fetchTagsForDatabaseInstance(region, instance) {
   const tags = await fetchTags(region, instance);

@@ -1,7 +1,7 @@
 import { groupBy } from 'lodash';
 
 /**
- * This method groups the instances according to environment and projects.
+ * Groups the instances according to environment and projects.
  *
  * @param {Array} instances
  * @returns {Array}

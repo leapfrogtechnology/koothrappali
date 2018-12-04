@@ -10,7 +10,7 @@ const INSTANCE_TYPE = 's3';
 /**
  * Fetch all buckets from all regions.
  *
- * @returns {Promise}
+ * @returns {Promise<Array>}
  */
 export async function fetchAllBuckets() {
   const regions = await fetchAllAWSLocation();
@@ -25,7 +25,7 @@ export async function fetchAllBuckets() {
  * Fetch buckets from particular region name.
  *
  * @param {String} region
- * @returns {Promise}
+ * @returns {Promise<Array>}
  */
 export async function fetchAllBucketsOfRegion(region) {
   const s3 = await fetchAll(region);
@@ -40,7 +40,7 @@ export async function fetchAllBucketsOfRegion(region) {
  *
  * @param {String} region
  * @param {Object} bucket
- * @returns {Promise}
+ * @returns {Promise<Object>}
  */
 async function fetchTagsFor(region, bucket) {
   let tags = [];

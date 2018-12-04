@@ -5,7 +5,7 @@ import { fetchAllDatabases } from '../services/databaseService';
 /**
  * Fetch all Instances.
  *
- * @return {Array}
+ * @return {Promise<Array>}
  */
 export async function fetchAllInstances() {
   const instances = [];

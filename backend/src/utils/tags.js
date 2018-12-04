@@ -1,10 +1,10 @@
 import { formatServices } from '../utils/services';
 
-const TAG_PROJECT = 'Project';
-const TAG_DEPLOYMENT = 'Deployment';
-const TAG_OS = 'OS Platform';
 const TAG_NAME = 'Name';
+const TAG_OS = 'OS Platform';
+const TAG_PROJECT = 'Project';
 const TAG_SERVICES = 'Services';
+const TAG_DEPLOYMENT = 'Deployment';
 
 /**
  * Assigns variables using tags.

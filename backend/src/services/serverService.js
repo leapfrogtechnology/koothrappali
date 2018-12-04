@@ -9,7 +9,7 @@ const INSTANCE_TYPE = 'ec2';
 /**
  * Get all servers from all regions.
  *
- * @returns {Promise}
+ * @returns {Promise<Array>}
  */
 export async function fetchAllServers() {
   const regions = await fetchAllAWSLocation();
@@ -23,8 +23,8 @@ export async function fetchAllServers() {
 /**
  * Get servers from particular region name.
  *
- * @param {Object} region
- * @returns {Promise}
+ * @param {String} region
+ * @returns {Promise<Array>}
  */
 async function fetchAllServersOfRegion(region) {
   const ec2 = await fetchAll(region);
