@@ -7,7 +7,7 @@ import { fetchAll, fetchTags } from '../utils/rds';
 const INSTANCE_TYPE = 'rds';
 
 /**
- * Async function to get all databases from all regions.
+ * Get all databases from all regions.
  *
  * @returns {Promise}
  */

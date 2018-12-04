@@ -7,7 +7,7 @@ import { fetchAllAWSLocation } from '../utils/aws';
 const INSTANCE_TYPE = 'ec2';
 
 /**
- * Async function to get all servers from all regions.
+ * Get all servers from all regions.
  *
  * @returns {Promise}
  */

@@ -5,7 +5,7 @@ import config from '../config';
 AWS.config.loadFromPath('./cred.json');
 
 /**
- * Get AWS Instances.
+ * Get an AWS Instances.
  *
  * @returns {Promise}
  */
@@ -20,7 +20,7 @@ function getAwsInstance() {
  * @returns {Promise}
  */
 export function getEC2InstanceFor(region) {
-  return new AWS.EC2({ apiVersion: config.aws.version, region: region });
+  return new AWS.EC2({ apiVersion: config.aws.version, region });
 }
 
 /**
@@ -30,7 +30,7 @@ export function getEC2InstanceFor(region) {
  * @returns {Promise}
  */
 export function getRDSInstanceFor(region) {
-  return new AWS.RDS({ apiVersion: config.aws.version, region: region });
+  return new AWS.RDS({ apiVersion: config.aws.version, region });
 }
 
 /**
@@ -40,7 +40,7 @@ export function getRDSInstanceFor(region) {
  * @returns {Promise}
  */
 export function getS3InstanceFor(region) {
-  return new AWS.S3({ apiVersion: config.aws.version, region: region });
+  return new AWS.S3({ apiVersion: config.aws.version, region });
 }
 
 /**
@@ -51,8 +51,7 @@ export function getS3InstanceFor(region) {
 export async function fetchAllAWSLocation() {
   const aws = getAwsInstance();
   const data = await aws.describeRegions().promise();
-  const regions = data.Regions;
-  const response = regions.map(region => region.RegionName);
+  const response = data.Regions.map(region => region.RegionName);
 
   return response;
 }
