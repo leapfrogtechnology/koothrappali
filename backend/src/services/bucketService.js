@@ -2,8 +2,8 @@ import { flatMap } from 'lodash';
 
 import logger from '../utils/logger';
 import { assignUsingTags } from '../utils/tags';
-import { fetchAllAWSLocation } from '../utils/aws';
 import { fetchAll, fetchTags } from '../utils/s3';
+import { fetchAllAWSLocation } from '../utils/aws';
 
 const INSTANCE_TYPE = 's3';
 
