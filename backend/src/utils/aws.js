@@ -1,9 +1,9 @@
 import AWS from 'aws-sdk';
-import { resolve } from 'path';
+import path from 'path';
 
 import config from '../config';
 
-AWS.config.loadFromPath(resolve('./cred.json'));
+AWS.config.loadFromPath(path.resolve('./cred.json'));
 
 /**
  * Get an AWS Instances.
