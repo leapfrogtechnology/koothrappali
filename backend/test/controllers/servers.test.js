@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import app from '../../src/app';
 
-describe('Servers Controller Test', () => {
+describe('/api/servers', () => {
   it('should return list of servers', done => {
     request(app)
       .get('/api/servers')

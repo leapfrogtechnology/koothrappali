@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import app from '../../src/app';
 
-describe('Buckets Controller Test', () => {
+describe('/api/buckets', () => {
   it('should return list of buckets', done => {
     request(app)
       .get('/api/buckets')

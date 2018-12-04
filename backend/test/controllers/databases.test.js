@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import app from '../../src/app';
 
-describe('Databases Controller Test', () => {
+describe('/api/databases', () => {
   it('should return list of databases', done => {
     request(app)
       .get('/api/databases')

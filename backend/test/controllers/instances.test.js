@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import app from '../../src/app';
 
-describe('Instances Controller Test', () => {
+describe('/api/instances', () => {
   it('should return list of instances', done => {
     request(app)
       .get('/api/instances')
