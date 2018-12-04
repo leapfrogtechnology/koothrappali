@@ -3,6 +3,7 @@ import { flatMap } from 'lodash';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllAWSLocation } from '../utils/aws';
 import { fetchAll, fetchTags } from '../utils/s3';
+import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 const INSTANCE_TYPE = 's3';
 
@@ -17,7 +18,7 @@ export async function fetchAllBuckets() {
   const results = await Promise.all(promises);
   const buckets = flatMap(results, result => result);
 
-  return buckets;
+  return groupByProjectAndEnvironment(buckets);
 }
 
 /**

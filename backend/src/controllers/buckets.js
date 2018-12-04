@@ -1,5 +1,4 @@
 import { fetchAllBuckets } from '../services/bucketService';
-import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 
 /**
  * Get all buckets.
@@ -11,5 +10,5 @@ import { groupByProjectAndEnvironment } from '../utils/dataTransformer';
 export async function fetchAll(req, res, next) {
   const data = await fetchAllBuckets();
 
-  res.json({ data: groupByProjectAndEnvironment(data) });
+  res.json({ data });
 }
