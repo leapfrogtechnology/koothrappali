@@ -9,7 +9,7 @@ AWS.config.loadFromPath('./cred.json');
  *
  * @returns {Promise}
  */
-function getAwsInstance() {
+function getAWSInstance() {
   return new AWS.EC2({ apiVersion: config.aws.version });
 }
 
@@ -46,10 +46,10 @@ export function getS3InstanceFor(region) {
 /**
  * Fetch All AWS Locations.
  *
- * @returns {Promise}
+ * @returns {Promise<Array>}
  */
 export async function fetchAllAWSLocation() {
-  const aws = getAwsInstance();
+  const aws = getAWSInstance();
   const data = await aws.describeRegions().promise();
   const response = data.Regions.map(region => region.RegionName);
 
