@@ -1,5 +1,6 @@
 import { flatMap } from 'lodash';
 
+import logger from '../utils/logger';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAllAWSLocation } from '../utils/aws';
 import { fetchAll, fetchTags } from '../utils/s3';
@@ -43,7 +44,12 @@ export async function fetchAllBucketsOfRegion(region) {
  * @returns {Promise}
  */
 async function fetchTagsFor(region, bucket) {
-  const tags = await fetchTags(region, bucket);
+  let tags = [];
+  try {
+    tags = await fetchTags(region, bucket);
+  } catch (error) {
+    logger.error(`${bucket.Name} has no tags`);
+  }
   const instance = assignUsingTags(tags);
 
   instance.location = region;
