@@ -24,3 +24,7 @@ Finally, start the application.
     $ NODE_ENV=production yarn start (For production)
 
 Navigate to http://localhost:8080/api-docs/ to verify installation.
+
+## License
+
+Koothrappali - Backend is under [MIT License](LICENSE).
