@@ -37,11 +37,10 @@ export function getRDSInstanceFor(region) {
 /**
  * Get new S3 instance.
  *
- * @param {String} region
  * @returns {Promise<Object>}
  */
-export function getS3InstanceFor(region) {
-  return new AWS.S3({ apiVersion: config.aws.version, region });
+export function getS3Instance() {
+  return new AWS.S3({ apiVersion: config.aws.version });
 }
 
 /**

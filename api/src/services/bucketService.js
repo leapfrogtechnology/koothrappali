@@ -3,7 +3,6 @@ import { flatMap } from 'lodash';
 import logger from '../utils/logger';
 import { assignUsingTags } from '../utils/tags';
 import { fetchAll, fetchTags } from '../utils/s3';
-import { fetchAllAWSLocation } from '../utils/aws';
 
 const INSTANCE_TYPE = 's3';
 
@@ -13,47 +12,30 @@ const INSTANCE_TYPE = 's3';
  * @returns {Promise<Array>}
  */
 export async function fetchAllBuckets() {
-  const regions = await fetchAllAWSLocation();
-  const promises = regions.map(region => fetchAllBucketsOfRegion(region));
-  const results = await Promise.all(promises);
-  const buckets = flatMap(results, result => result);
+  const s3 = await fetchAll();
+  const s3WithTags = s3.map(bucket => fetchTagsFor(bucket));
+  const buckets = await Promise.all(s3WithTags);
 
   return buckets;
 }
 
 /**
- * Fetch buckets from particular region name.
- *
- * @param {String} region
- * @returns {Promise<Array>}
- */
-export async function fetchAllBucketsOfRegion(region) {
-  const s3 = await fetchAll(region);
-  const s3WithTags = s3.map(bucket => fetchTagsFor(region, bucket));
-  const response = await Promise.all(s3WithTags);
-
-  return response;
-}
-
-/**
  * This function fetches tags for the S3.
  *
- * @param {String} region
  * @param {Object} bucket
  * @returns {Promise<Object>}
  */
-async function fetchTagsFor(region, bucket) {
+async function fetchTagsFor(bucket) {
   let tags = [];
 
   try {
-    tags = await fetchTags(region, bucket);
+    tags = await fetchTags(bucket);
   } catch (error) {
     logger.error(`Could not fetch tags for ${bucket.Name}`, error);
   }
 
   return {
     ...assignUsingTags(tags),
-    location: region,
     type: INSTANCE_TYPE
   };
 }
