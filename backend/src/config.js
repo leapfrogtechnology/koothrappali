@@ -17,6 +17,9 @@ const config = {
     level: process.env.LOG_LEVEL || 'info',
     datePattern: 'YYYY-MM-DD',
     filename: '%DATE%-debug.log'
+  },
+  aws: {
+    version: '2016-11-15'
   }
 };
 

@@ -1,6 +1,10 @@
 import { Router } from 'express';
 
 import swaggerSpec from './utils/swagger';
+import serverRoutes from './routes/serverRoutes';
+import bucketRoutes from './routes/bucketRoutes';
+import databaseRoutes from './routes/databaseRoutes';
+import instanceRoutes from './routes/instanceRoutes';
 
 /**
  * Contains all API routes for the application.
@@ -23,5 +27,10 @@ router.get('/', (req, res) => {
     apiVersion: req.app.locals.version
   });
 });
+
+router.use('/servers', serverRoutes);
+router.use('/buckets', bucketRoutes);
+router.use('/databases', databaseRoutes);
+router.use('/instances', instanceRoutes);
 
 export default router;
