@@ -1,7 +1,7 @@
 import { getS3Instance } from './aws';
 
 /**
- * Fetch all S3 buckets from region.
+ * Fetch all S3 buckets.
  *
  * @returns {Promise}
  */

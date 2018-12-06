@@ -7,7 +7,7 @@ import { fetchAll, fetchTags } from '../utils/s3';
 const INSTANCE_TYPE = 's3';
 
 /**
- * Fetch all buckets from all regions.
+ * Fetch all buckets.
  *
  * @returns {Promise<Array>}
  */
@@ -20,7 +20,7 @@ export async function fetchAllBuckets() {
 }
 
 /**
- * This function fetches tags for the S3.
+ * Fetch tags for S3 instance
  *
  * @param {Object} bucket
  * @returns {Promise<Object>}
