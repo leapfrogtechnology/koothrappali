@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import * as http from './utils/http';
 import GridView from './components/GridView/Index';
 import TableView from './components/TableView/Index';
+import { fetchAll } from './services/instance';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    http.default.get('/instances').then(data => this.setState({ data: data.data }));
+    fetchAll().then(data => this.setState({ data: data.data }));
   }
 
   showGridView() {
