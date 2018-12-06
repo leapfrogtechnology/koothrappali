@@ -2,14 +2,11 @@ import { version, title, description } from '../package.json';
 
 const config = {
   app: {
-    name: title || 'Koothrapali',
-    description: description || '',
-    version: version || '0.0.0',
+    name: title,
+    description: description,
+    version: version,
     port: process.env.PORT || 8080,
     host: process.env.APP_HOST || '0.0.0.0'
-  },
-  sentry: {
-    dsn: ''
   },
   log: {
     maxDays: '14d',
