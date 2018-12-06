@@ -12,9 +12,9 @@
 
 Clone the repository, install the dependencies and get started right away.
 
-    $ git clone git@github.com:leapfrogtechnology/koothrappali.git <application-name>
-    $ cd <application-name>
-    $ yarn   # or npm install
+    $ git clone git@github.com:leapfrogtechnology/koothrappali.git
+    $ cd koothrappali/api
+    $ yarn
 
 Make a copy of `cred_example.json` as `cred.json` and update your AWS details.
 
