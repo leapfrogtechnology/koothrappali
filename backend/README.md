@@ -27,4 +27,4 @@ Navigate to http://localhost:8080/api-docs/ to verify installation.
 
 ## License
 
-Koothrappali - Backend is under [MIT License](LICENSE).
+Koothrappali - Backend is under [MIT License](../LICENSE).
