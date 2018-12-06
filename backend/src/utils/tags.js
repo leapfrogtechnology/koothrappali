@@ -14,6 +14,7 @@ const TAG_DEPLOYMENT = 'Deployment';
  */
 export function assignUsingTags(tags) {
   const instance = {};
+
   tags.forEach(tag => {
     switch (tag.Key) {
       case TAG_PROJECT:
