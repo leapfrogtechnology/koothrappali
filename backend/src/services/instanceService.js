@@ -8,10 +8,7 @@ import { fetchAllDatabases } from '../services/databaseService';
  * @return {Promise<Array>}
  */
 export async function fetchAllInstances() {
-  const instances = [];
   const [servers, databases, buckets] = await Promise.all([fetchAllServers(), fetchAllBuckets(), fetchAllDatabases()]);
 
-  instances.push(...servers, ...buckets, ...databases);
-
-  return instances;
+  return [...servers, ...buckets, ...databases];
 }
