@@ -11,7 +11,7 @@ const CardItem = props => {
   return (
     <div className="card border-secondary mb-3 box-shadow">
       <CardHeader server={server} />
-      <Service services={server.services} />
+      {server.services && <Service services={server.services} />}
       <Description details={server} />
     </div>
   );

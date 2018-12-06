@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    http.default.get('/data').then(data => this.setState({ data: data.data }));
+    http.default.get('/instances').then(data => this.setState({ data: data.data }));
   }
 
   showGridView() {
@@ -47,7 +47,7 @@ class App extends Component {
             Table View
           </a>
         </div>
-        {data ? isGridView ? <GridView projects={data} /> : <TableView projects={data} /> : <p>Loading...</p>}
+        {data ? isGridView ? <GridView projects={data.data} /> : <TableView projects={data.data} /> : <p>Loading...</p>}
       </main>
     );
   }
