@@ -23,7 +23,7 @@ Finally, start the application.
     $ yarn start:dev (For development)
     $ NODE_ENV=production yarn start (For production)
 
-Navigate to http://localhost:8080/api-docs/ to verify installation.
+Navigate to http://localhost:8080/api/ to verify installation.
 
 ## License
 
