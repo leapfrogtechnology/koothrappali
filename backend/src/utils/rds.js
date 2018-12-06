@@ -14,7 +14,7 @@ export async function fetchAll(region) {
 }
 
 /**
- * Fetch all tags of rds instance.
+ * Fetch all tags of RDS instance.
  *
  * @param {String} region
  * @param {Object} instance
