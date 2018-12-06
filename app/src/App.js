@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
+import { fetchAll } from './services/instance';
 import GridView from './components/GridView/Index';
 import TableView from './components/TableView/Index';
-import { fetchAll } from './services/instance';
 
 class App extends Component {
   constructor(props) {
