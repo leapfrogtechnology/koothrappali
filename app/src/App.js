@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import * as http from './utils/http';
+import * as instanceService from './services/instance';
 import GridView from './components/GridView/Index';
 import TableView from './components/TableView/Index';
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    http.default.get('/data').then(data => this.setState({ data: data.data }));
+    instanceService.fetchAll().then(({ data }) => this.setState({ data: data.data }));
   }
 
   showGridView() {
