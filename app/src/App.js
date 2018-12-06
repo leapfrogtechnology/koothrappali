@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { fetchAll } from './services/instance';
+import * as instanceService from './services/instance';
 import GridView from './components/GridView/Index';
 import TableView from './components/TableView/Index';
 
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetchAll().then(data => this.setState({ data: data.data }));
+    instanceService.fetchAll().then(({ data }) => this.setState({ data: data.data }));
   }
 
   showGridView() {
@@ -47,7 +47,7 @@ class App extends Component {
             Table View
           </a>
         </div>
-        {data ? isGridView ? <GridView projects={data.data} /> : <TableView projects={data.data} /> : <p>Loading...</p>}
+        {data ? isGridView ? <GridView projects={data} /> : <TableView projects={data} /> : <p>Loading...</p>}
       </main>
     );
   }
