@@ -13,7 +13,7 @@ const INSTANCE_TYPE = 's3';
  */
 export async function fetchAllBuckets() {
   const s3 = await fetchAll();
-  const s3WithTags = s3.map(bucket => fetchTagsFor(bucket));
+  const s3WithTags = s3.map(bucket => fetchTags(bucket));
   const buckets = await Promise.all(s3WithTags);
 
   return buckets;
@@ -25,7 +25,7 @@ export async function fetchAllBuckets() {
  * @param {Object} bucket
  * @returns {Promise<Object>}
  */
-async function fetchTagsFor(bucket) {
+async function fetchTags(bucket) {
   let tags = [];
 
   try {
