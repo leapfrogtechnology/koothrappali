@@ -20,7 +20,7 @@ export async function fetchAllBuckets() {
 }
 
 /**
- * Fetch tags for S3 instance
+ * Fetch tags for S3 instance.
  *
  * @param {Object} bucket
  * @returns {Promise<Object>}
