@@ -1,0 +1,204 @@
+version: 2
+jobs:
+  checkout_code:
+    docker:
+      # This is custome nodejs image created for building the node application
+      - image: lftechnology/custom-node:latest
+    working_directory: ~/vyaguta-workspace
+    steps:
+      # Checkout the repository
+      - checkout
+      # Fetch all environment required for deployment and building the application
+      - run: 
+          name: Fetch ops env from vault
+          command: |
+                    # remove all the old cache
+                    rm -rf vyaguta-workspace/.
+                    # Need to export this variable to process the unicode characters
+                    export LC_ALL=C.UTF-8
+                    export LANG=C.UTF-8
+                    # envlist tools is used to fetch all the ops env from ci
+                    envault list -server=$VAULT_SERVER -secret=$KV_ENGINE_NAME/data/$VAULT_SECRET_DIR/ops/ci | \
+                    # loop through each key value and log to the .bashrc file
+                      while read -r line; \
+                      do \
+                      echo "export $line "; \
+                      done >> ~/.bashrc 
+      
+      # Define the stage name from the branch name                     
+      - run:
+          name: Setup samops scripts and define stages
+          command: |  
+                  source ~/.bashrc
+                  
+                  if [ $CIRCLE_BRANCH == "dev" ] || [ $CIRCLE_BRANCH == "ci-config" ]
+                  then
+                    echo 'export STAGE=dev' >> ~/.bashrc                    
+                  elif [ $CIRCLE_BRANCH == "uat" ]
+                  then
+                    echo 'export STAGE=uat' >> ~/.bashrc
+                  elif [ $CIRCLE_BRANCH == "qa" ]
+                  then
+                    echo 'export STAGE=qa' >> ~/.bashrc
+                  elif [ $CIRCLE_BRANCH == "release" ]
+                  then
+                    echo 'export STAGE=staging' >> ~/.bashrc
+                  elif [ $CIRCLE_BRANCH == "master" ]
+                  then
+                    echo 'export STAGE=prod' >> ~/.bashrc
+                  else
+                    echo "Undefine stage"
+                  fi
+                  
+                  # update recent environment from .bashrc file
+                  source ~/.bashrc                  
+                  if [ "$DEVOPS_VERSION" != "" ] | [ "$DEVOPS_VERSION" != null ]
+                  then
+                    echo "Downloading the ${DEVOPS_VERSION}"
+                    githubreleasecodeurl="${DEVOPS_REPO/.git//zip/$DEVOPS_VERSION}"
+                    curl  "${githubreleasecodeurl/github/codeload.github}" > devops.zip       
+                    mkdir -p _devops
+                    unzip devops.zip -d _devops 
+                    cd _devops/* 
+                    cp -rfp . ../../devops 
+                    cd ../../ 
+                    rm -rf _devops devops.zip
+                  else
+                    echo "Downloading the default branch"
+                    git clone ${DEVOPS_REPO} ./_devops
+                    rm -rf ./_devops/.git/*
+                    cp -rfp _devops/. devops && rm -rf _devops/
+                  fi
+      - save_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/vyaguta-workspace
+
+      - save_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+          paths:
+            - ~/.bashrc
+            
+  build-api:
+    docker:
+      - image: lftechnology/custom-node:latest
+    working_directory: ~/vyaguta-workspace
+    steps:
+      - restore_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_SHA1 }}
+          
+      - restore_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_WORKFLOW_ID }}          
+          
+      - run:
+          name: Build the API
+          command: source ~/.bashrc && cd devops && make buildapi
+
+      - save_cache:
+          key: api-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/vyaguta-workspace
+            - ~/.bashrc
+
+  build-app:
+    docker:
+      - image: lftechnology/custom-node:latest
+    working_directory: ~/vyaguta-workspace
+    steps:
+      - restore_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_SHA1 }}    
+      
+      - restore_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_WORKFLOW_ID }}          
+ 
+      - run:
+          name: Build the APP
+          command: source ~/.bashrc && cd devops && make buildapp
+                              
+      - save_cache:
+          key: app-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/vyaguta-workspace   
+            - ~/.bashrc
+              
+  deploy-api:
+    docker:
+      - image: lftechnology/sam-deployer:latest
+    working_directory: ~/vyaguta-workspace
+    steps:
+      - restore_cache:
+          key: api-{{ .Environment.CIRCLE_SHA1 }}
+      
+      - restore_cache:
+          key: vyaguta-workspace-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+          
+      - run:
+          name: Deploy
+          command: | 
+                    source ~/.bashrc
+                    cd devops                    
+                    make postbuild
+                    make compileTemplate
+                    make deploy env=$STAGE                    
+     
+  deploy-app:
+    docker:
+      - image: lftechnology/sam-deployer:latest
+    working_directory: ~/vyaguta-workspace
+    steps:
+      - restore_cache:
+          key: app-{{ .Environment.CIRCLE_SHA1 }}
+                  
+      - run:
+          name: deploy
+          command: | 
+                    cd devops
+                    source ~/.bashrc
+                    make deployapp env=$STAGE      
+          
+workflows:
+  version: 2
+  myworkflow:
+    jobs:
+      - checkout_code
+      - build-api:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: 
+                - master
+                - qa
+                - dev
+                - ci-config
+              
+      - deploy-api:
+          requires:
+            - build-api
+          filters:
+            branches:
+              only: 
+                - master
+                - qa
+                - dev
+                - ci-config
+      - build-app:
+          requires:
+            - checkout_code
+          filters:
+            branches:
+              only: 
+                - master
+                - qa
+                - dev
+                - ci-config
+      - deploy-app:
+          requires:
+            - build-app
+          filters:
+            branches:
+              only: 
+                - master
+                - qa
+                - dev
+                - ci-config
