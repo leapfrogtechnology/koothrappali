@@ -154,6 +154,7 @@ jobs:
           command: | 
                     cd devops
                     source ~/.bashrc
+                    cat ~/.bashrc
                     make deployapp env=$STAGE      
           
 workflows:
